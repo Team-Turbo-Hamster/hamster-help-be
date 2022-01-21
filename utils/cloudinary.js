@@ -11,10 +11,4 @@ cloudinary.config({
   api_secret: process.env.CLOUDINARY_API_SECRET,
 });
 
-// cloudinary.config({
-//   cloud_name: "turbo-hamster",
-//   api_key: "783751753523248",
-//   api_secret: "XTN1DkPYVBzsAN4v9I6ZJjqcHTA",
-// });
-
 module.exports = { cloudinary };
