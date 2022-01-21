@@ -34,6 +34,12 @@ Open `.env.development` and set the keys as below:
 - `PORT` - The port you would like the server to run on e.g. `5000`
 - `CLIENT_URL` - The URL of the client which will be issuing requests to the Socket.io server e.g. `http://localhost:3000`.
 
+- `CLOUDINARY_NAME`
+- `CLOUDINARY_API_KEY`
+- `CLOUDINARY_API_SECRET` - Cloudinary CDN access to upload
+
+- `DATABASE` - This link will connect your server with Atlas
+
 ### Starting the Dev Server
 
 Use the following command to start the development server:
