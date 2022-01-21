@@ -1,0 +1,30 @@
+{
+  "name": "hamster-help-be",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start": "NODE_ENV=development nodemon index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Team-Turbo-Hamster/hamster-help-be.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Team-Turbo-Hamster/hamster-help-be/issues"
+  },
+  "homepage": "https://github.com/Team-Turbo-Hamster/hamster-help-be#readme",
+  "dependencies": {
+    "dotenv": "^14.2.0",
+    "express": "^4.17.2",
+    "express-session": "^1.17.2",
+    "jsonwebtoken": "^8.5.1",
+    "morgan": "^1.10.0",
+    "nodemon": "^2.0.15",
+    "socket.io": "^4.4.1",
+    "uuid": "^8.3.2"
+  }
+}
