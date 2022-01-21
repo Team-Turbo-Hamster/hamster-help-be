@@ -2,6 +2,7 @@ const http = require("http");
 const { app, sessionMiddleware } = require("./servers/app.js");
 const httpServer = http.createServer(app);
 const passport = require("passport");
+const mongoose = require("mongoose");
 const io = require("./servers/socket.js")(
   httpServer,
   sessionMiddleware,
@@ -12,6 +13,13 @@ require("dotenv").config({
   path: `./env/.env.${process.env.NODE_ENV}`,
   debug: true,
 });
+
+mongoose
+  .connect(process.env.DATABASE, {
+    useNewUrlParser: true,
+    useUnifiedTopology: true,
+  })
+  .then(() => console.log("DB connection successful"));
 
 httpServer.listen(process.env.PORT, () => {
   console.log(
