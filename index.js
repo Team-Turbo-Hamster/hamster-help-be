@@ -1,7 +1,12 @@
 const http = require("http");
-const app = require("./app.js");
+const { app, sessionMiddleware } = require("./servers/app.js");
 const httpServer = http.createServer(app);
-const io = require("./socket.js")(httpServer);
+const passport = require("passport");
+const io = require("./servers/socket.js")(
+  httpServer,
+  sessionMiddleware,
+  passport
+);
 
 require("dotenv").config({
   path: `./env/.env.${process.env.NODE_ENV}`,
