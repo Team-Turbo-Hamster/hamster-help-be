@@ -4,7 +4,9 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "NODE_ENV=development nodemon index.js"
+    "start": "NODE_ENV=development nodemon index.js",
+    "test": "jest",
+    "seed-dev": "NODE_ENV=development node db/seeds/run-seed.js"
   },
   "repository": {
     "type": "git",
@@ -18,7 +20,8 @@
   },
   "homepage": "https://github.com/Team-Turbo-Hamster/hamster-help-be#readme",
   "devDependencies": {
-    "jest": "^27.4.7"
+    "jest": "^27.4.7",
+    "supertest": "^6.2.2"
   },
   "dependencies": {
     "cloudinary": "^1.28.1",
@@ -27,6 +30,7 @@
     "express-session": "^1.17.2",
     "jsonwebtoken": "^8.5.1",
     "mongoose": "^6.1.7",
+    "morgan": "^1.10.0",
     "passport": "^0.5.2",
     "socket.io": "^4.4.1",
     "uuid": "^8.3.2",
