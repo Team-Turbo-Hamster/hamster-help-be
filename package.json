@@ -17,16 +17,16 @@
     "url": "https://github.com/Team-Turbo-Hamster/hamster-help-be/issues"
   },
   "homepage": "https://github.com/Team-Turbo-Hamster/hamster-help-be#readme",
+  "devDependencies": {
+    "jest": "^27.4.7"
+  },
   "dependencies": {
     "cloudinary": "^1.28.1",
     "dotenv": "^14.2.0",
     "express": "^4.17.2",
     "express-session": "^1.17.2",
-    "jest": "^27.4.7",
     "jsonwebtoken": "^8.5.1",
     "mongoose": "^6.1.7",
-    "morgan": "^1.10.0",
-    "nodemon": "^2.0.15",
     "passport": "^0.5.2",
     "socket.io": "^4.4.1",
     "uuid": "^8.3.2",
