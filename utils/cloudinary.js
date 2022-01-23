@@ -1,8 +1,3 @@
-require("dotenv").config({
-  path: "./env/.env.development",
-  debug: true,
-});
-
 const cloudinary = require("cloudinary").v2;
 
 cloudinary.config({
