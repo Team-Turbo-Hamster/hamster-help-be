@@ -1,8 +1,7 @@
 const User = require("../models/user.model");
 const { cloudinary } = require("../utils/cloudinary");
-exports.getAllUsers = async (req, res, next) => {
-  console.log(req.body);
 
+exports.getAllUsers = async (req, res, next) => {
   const users = await User.find();
   res.status(200).send({ users });
 };

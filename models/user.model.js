@@ -27,8 +27,7 @@ const userSchema = new mongoose.Schema(
       enum: ["Student", "Tutor"],
       default: "Student",
     },
-
-    // tickets: [{ type: mongoose.Schema.ObjectId, ref: "Ticket" }],
+    tickets: [{ type: mongoose.Schema.ObjectId, ref: "Ticket" }],
   },
   {
     toJSON: { virtuals: true },
@@ -36,10 +35,14 @@ const userSchema = new mongoose.Schema(
   }
 );
 
-userSchema.virtual("tickets", {
-  ref: "Ticket",
-  foreignField: "user",
-  localField: "_id",
+userSchema.pre(/^find/, function (next) {
+  this.populate({
+    path: "tickets",
+    match: { resolved: false },
+    select: "title body tags zoomLink image created_at resolved",
+  });
+
+  next();
 });
 
 const User = mongoose.model("User", userSchema);

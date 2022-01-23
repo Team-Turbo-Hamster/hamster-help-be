@@ -9,11 +9,6 @@ const io = require("./servers/socket.js")(
   passport
 );
 
-require("dotenv").config({
-  path: `./env/.env.${process.env.NODE_ENV}`,
-  debug: true,
-});
-
 mongoose
   .connect(process.env.DATABASE, {
     useNewUrlParser: true,

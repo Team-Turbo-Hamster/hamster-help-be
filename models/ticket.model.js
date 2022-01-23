@@ -8,11 +8,10 @@ const ticketSchema = new mongoose.Schema(
       require: [true, "Please provide a title"],
     },
     user: {
-      type: mongoose.Schema.ObjectId,
+      type: mongoose.Schema.Types.ObjectId,
       ref: "User",
       required: [true, "Ticket must belong to a user"],
     },
-
     body: {
       type: String,
       required: [true, "Please provide a description"],
@@ -24,12 +23,18 @@ const ticketSchema = new mongoose.Schema(
       type: String,
       validate: [validator.isURL, "Please provide a valid link"],
     },
-    image: {
-      type: Object,
-    },
+    images: [
+      {
+        type: Object,
+      },
+    ],
     created_at: {
       type: Date,
       default: Date.now(),
+    },
+    resolved: {
+      type: Boolean,
+      default: false,
     },
   },
   {
