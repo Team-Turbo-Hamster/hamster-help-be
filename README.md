@@ -30,7 +30,7 @@ This project requires several environment variables to be set. Use the command b
     cp sample-environment environment/development.js
 ```
 
-Open `.env.development` and set the keys as below:
+Open `environment/development.js` and set the keys as below:
 
 - `PORT` - The port you would like the server to run on e.g. `5000`
 - `CLIENT_URL` - The URL of the client which will be issuing requests to the Socket.io server e.g. `http://localhost:3000`.
