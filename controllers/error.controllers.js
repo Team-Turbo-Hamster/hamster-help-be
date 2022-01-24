@@ -50,6 +50,10 @@ module.exports = (err, req, res, next) => {
   err.status = err.status || "error";
 
   if (process.env.NODE_ENV === "development") {
+    console.log("PARAMS", req.params);
+    console.log("QUERY", req.query);
+    console.log("BODY", req.body);
+    console.log("URL", req.url);
     sendErrorDev(err, res);
   } else if (process.env.NODE_ENV === "production") {
     let error = Object.assign(err);
