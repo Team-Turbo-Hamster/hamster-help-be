@@ -1,4 +1,3 @@
-const env = require("../../environment/test");
 const mongoose = require("mongoose");
 const User = require("../../models/user.model");
 const Ticket = require("../../models/ticket.model");
