@@ -28,3 +28,5 @@ describe("GET /api/users", () => {
         });
       }));
 });
+
+describe("POST /api/users", () => {});

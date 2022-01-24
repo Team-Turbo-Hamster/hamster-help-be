@@ -19,8 +19,6 @@ exports.createUser = async (req, res, next) => {
       userFields.avatar = uploadedRes.public_id;
     }
 
-    console.log(userFields);
-
     const user = await User.create(userFields);
     res.status(201).send({ user });
   } catch (error) {
