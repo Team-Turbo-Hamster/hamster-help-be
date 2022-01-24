@@ -7,14 +7,13 @@ const { app } = require("../servers/app");
 const runSeed = require("../db/seeds/seed");
 const mongoose = require("mongoose");
 
-before(async function () {
-  this.timeout = 30000;
+before(async () => {
   return await runSeed();
-});
+}).timeout(30000);
 
-after(async function () {
+after(async () => {
   await mongoose.disconnect();
-});
+}).timeout(30000);
 
 describe("GET /api/users", function () {
   it("should response with an array of users", async () => {
