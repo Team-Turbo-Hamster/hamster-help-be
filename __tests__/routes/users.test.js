@@ -24,7 +24,7 @@ describe("GET /api/users", function () {
     mongoose.disconnect();
   });
 
-  it("should response with an array of users", async () => {
+  it("should respond with an array of users", async () => {
     await request(app)
       .get("/api/users")
       .expect(200)

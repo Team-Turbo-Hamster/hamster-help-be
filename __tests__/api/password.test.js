@@ -38,7 +38,18 @@ describe("validatePassword", () => {
       input,
       "$2b$10$0aIWuZbwpj304PGSzd1WXee5rYy7VL/yXHDNCKIvtTzkAWHxfVoOa"
     );
+    const expected = true;
 
-    expect(output).to.equal(true);
+    expect(output).to.equal(expected);
+  });
+  it("should return false for an invalid password and encrypted password", async () => {
+    const input = "password";
+    const output = await validatePassword(
+      input,
+      "fewlkjwfeljkfwejlkwfelkjfweljkfwelkjfwe"
+    );
+    const expected = false;
+
+    expect(output).to.equal(expected);
   });
 });
