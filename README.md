@@ -23,10 +23,11 @@ Enter the following commands to clone and install dependencies for this project:
 
 ### Environment Variables
 
-This project requires several environment variables to be set. Use the command below to copy `.env.sample`:
+This project requires several environment variables to be set. Use the command below to copy set up environment variables:
 
 ```
-    cp ./env/.env.sample ./env/.env.development
+    mkdir environment
+    cp sample-environment environment/development.js
 ```
 
 Open `.env.development` and set the keys as below:
