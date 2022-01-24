@@ -1,3 +1,7 @@
+if (!process.env.REMOTE_TEST) {
+  require("../environment/test");
+}
+
 const { it, describe, beforeAll, afterAll } = require("@jest/globals");
 const request = require("supertest");
 const { app } = require("../servers/app");

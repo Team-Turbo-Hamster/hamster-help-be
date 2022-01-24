@@ -26,6 +26,8 @@ jobs:
           node-version: "14"
       - run: npm install
       - run: npm test
+        with:
+          DATABASE: ${{secrets.DATABASE}}
   deploy:
     runs-on: ubuntu-latest
     needs: [build]
