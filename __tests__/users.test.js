@@ -16,9 +16,10 @@ after(async function () {
   await mongoose.disconnect();
 });
 
-describe("GET /api/users", () => {
+describe("GET /api/users", function () {
+  this.timeout = 30000;
+
   it("should response with an array of users", async function () {
-    this.timeout = 30000;
     await request(app)
       .get("/api/users")
       .expect(200)
