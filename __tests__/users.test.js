@@ -14,7 +14,7 @@ beforeAll(async () => await runSeed());
 
 afterAll(async () => {
   await mongoose.disconnect();
-  wtf.dump();
+  //wtf.dump();
   log();
   //console.log("process._getActiveHandles()", process._getActiveHandles());
 });
