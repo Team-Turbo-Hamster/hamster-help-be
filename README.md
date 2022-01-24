@@ -46,5 +46,5 @@ Open `environment/development.js` and set the keys as below:
 Use the following command to start the development server:
 
 ```
-    npm start
+    npm run start-dev
 ```
