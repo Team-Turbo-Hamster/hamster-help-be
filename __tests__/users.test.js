@@ -7,7 +7,8 @@ const { app } = require("../servers/app");
 const runSeed = require("../db/seeds/seed");
 const mongoose = require("mongoose");
 
-before((done) => {
+before(function (done) {
+  this.timeout(30000);
   runSeed()
     .then(() => {
       done();
