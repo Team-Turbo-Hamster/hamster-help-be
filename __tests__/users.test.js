@@ -7,14 +7,20 @@ const { app } = require("../servers/app");
 const runSeed = require("../db/seeds/seed");
 const mongoose = require("mongoose");
 
-before(async function () {
+before(function (done) {
   this.timeout = 30000;
-  return await runSeed();
+  runSeed()
+    .then(() => {
+      done();
+    })
+    .catch((err) => {
+      console.error(err);
+    });
 });
 
-after(async function () {
-  this.timeout = 30000;
-  await mongoose.disconnect();
+after(function () {
+  this.timeout = 5000;
+  mongoose.disconnect();
 });
 
 describe("GET /api/users", function () {
