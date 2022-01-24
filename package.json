@@ -4,10 +4,12 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "nodemon -- -r ./environment/development.js index.js",
+    "start": "nodemon index.js",
+    "start-dev": "nodemon -- -r ./environment/development.js index.js",
     "test": "export NODE_ENV=test && mocha __tests__",
     "test-remote": "mocha --exit __tests__",
-    "seed-dev": "node -r ./environment/development.js db/seeds/run-seed.js"
+    "seed-dev": "node -r ./environment/development.js db/seeds/run-seed.js",
+    "seed-prod": "NODE_ENV=production DATABASE=${heroku config:get DATABASE} db/seeds/run-seed.js"
   },
   "repository": {
     "type": "git",
