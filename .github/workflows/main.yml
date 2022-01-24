@@ -26,7 +26,7 @@ jobs:
           node-version: "14"
           DATABASE: ${{secrets.DATABASE}}
       - run: npm install
-      - run: npm test
+      - run: export REMOTE_TEST=1 && npm test
 
   deploy:
     runs-on: ubuntu-latest
