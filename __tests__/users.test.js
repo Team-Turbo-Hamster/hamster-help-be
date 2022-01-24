@@ -17,9 +17,7 @@ after(async function () {
 });
 
 describe("GET /api/users", function () {
-  this.timeout = 30000;
-
-  it("should response with an array of users", async function () {
+  it("should response with an array of users", async () => {
     await request(app)
       .get("/api/users")
       .expect(200)
@@ -35,7 +33,5 @@ describe("GET /api/users", function () {
           expect(user).to.have.property("tickets");
         });
       });
-  });
+  }).timeout(30000);
 });
-
-describe("POST /api/users", () => {});
