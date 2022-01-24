@@ -7,23 +7,23 @@ const { app } = require("../servers/app");
 const runSeed = require("../db/seeds/seed");
 const mongoose = require("mongoose");
 
-before(function (done) {
-  this.timeout = 30000;
-  runSeed()
-    .then(() => {
-      done();
-    })
-    .catch((err) => {
-      console.error(err);
-    });
-});
-
-after(function () {
-  this.timeout = 5000;
-  mongoose.disconnect();
-});
-
 describe("GET /api/users", function () {
+  this.timeout(30000);
+
+  before(function (done) {
+    runSeed()
+      .then(() => {
+        done();
+      })
+      .catch((err) => {
+        console.error(err);
+      });
+  });
+
+  after(function () {
+    mongoose.disconnect();
+  });
+
   it("should response with an array of users", async () => {
     await request(app)
       .get("/api/users")
