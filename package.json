@@ -34,6 +34,8 @@
     "passport": "^0.5.2",
     "socket.io": "^4.4.1",
     "uuid": "^8.3.2",
-    "validator": "^13.7.0"
+    "validator": "^13.7.0",
+    "why-is-node-running": "^2.2.0",
+    "wtfnode": "^0.9.1"
   }
 }

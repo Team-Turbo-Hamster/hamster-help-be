@@ -1,3 +1,5 @@
+const log = require("why-is-node-running");
+const wtf = require("wtfnode");
 if (!process.env.REMOTE_TEST) {
   require("../environment/test");
 }
@@ -8,9 +10,14 @@ const { app } = require("../servers/app");
 const runSeed = require("../db/seeds/seed");
 const mongoose = require("mongoose");
 
-beforeAll(() => runSeed());
+beforeAll(async () => await runSeed());
 
-afterAll(() => mongoose.disconnect());
+afterAll(async () => {
+  await mongoose.disconnect();
+  wtf.dump();
+  log();
+  //console.log("process._getActiveHandles()", process._getActiveHandles());
+});
 
 describe("GET /api/users", () => {
   it("should response with an array of users", () =>
