@@ -6,7 +6,7 @@
   "scripts": {
     "start": "nodemon -- -r ./environment/development.js index.js",
     "test": "export NODE_ENV=test && mocha __tests__",
-    "test-remote": "export REMOTE_TEST=1 && mocha __tests__",
+    "test-remote": "mocha __tests__",
     "seed-dev": "node -r ./environment/development.js db/seeds/run-seed.js"
   },
   "repository": {
