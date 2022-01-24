@@ -5,8 +5,8 @@
   "main": "index.js",
   "scripts": {
     "start": "nodemon -- -r ./environment/development.js index.js",
-    "test": "jest __tests__",
-    "test-remote": "export REMOTE_TEST=1 && jest __tests__",
+    "test": "mocha __tests__",
+    "test-remote": "export REMOTE_TEST=1 && mocha __tests__",
     "seed-dev": "node -r ./environment/development.js db/seeds/run-seed.js"
   },
   "repository": {
@@ -21,8 +21,9 @@
   },
   "homepage": "https://github.com/Team-Turbo-Hamster/hamster-help-be#readme",
   "devDependencies": {
-    "jest": "^27.4.7",
-    "supertest": "^6.2.2"
+    "supertest": "^6.2.2",
+    "mocha": "^9.2.0",
+    "chai": "^4.3.4"
   },
   "dependencies": {
     "cloudinary": "^1.28.1",
@@ -34,8 +35,6 @@
     "passport": "^0.5.2",
     "socket.io": "^4.4.1",
     "uuid": "^8.3.2",
-    "validator": "^13.7.0",
-    "why-is-node-running": "^2.2.0",
-    "wtfnode": "^0.9.1"
+    "validator": "^13.7.0"
   }
 }

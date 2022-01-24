@@ -1,10 +1,7 @@
-const log = require("why-is-node-running");
-const wtf = require("wtfnode");
 if (!process.env.REMOTE_TEST) {
   require("../environment/test");
 }
-
-const { it, describe } = require("@jest/globals");
+const expect = require("chai").expect;
 const request = require("supertest");
 const { app } = require("../servers/app");
 
