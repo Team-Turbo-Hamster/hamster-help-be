@@ -7,26 +7,19 @@ const { app } = require("../servers/app");
 const runSeed = require("../db/seeds/seed");
 const mongoose = require("mongoose");
 
-before(function (done) {
+before(async function () {
   this.timeout(30000);
-  runSeed()
-    .then(() => {
-      done();
-    })
-    .catch((err) => {
-      console.log(err);
-    });
+  return await runSeed();
 });
 
-after((done) => {
+after(function () {
   mongoose.disconnect();
-  done();
 });
 
 describe("GET /api/users", () => {
-  this.timeout = 20000;
-  it("should response with an array of users", function (done) {
-    request(app)
+  it("should response with an array of users", async function () {
+    this.timeout = 30000;
+    await request(app)
       .get("/api/users")
       .expect(200)
       .then(({ body: { users } }) => {
@@ -40,7 +33,6 @@ describe("GET /api/users", () => {
           expect(user).to.have.property("role");
           expect(user).to.have.property("tickets");
         });
-        done();
       });
   });
 });
