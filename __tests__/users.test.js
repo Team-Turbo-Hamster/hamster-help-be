@@ -7,13 +7,19 @@ const { app } = require("../servers/app");
 const runSeed = require("../db/seeds/seed");
 const mongoose = require("mongoose");
 
-before(async () => await runSeed());
+before((done) => {
+  runSeed()
+    .then(() => {
+      done();
+    })
+    .catch((err) => {
+      console.log(err);
+    });
+});
 
-after(async () => {
-  await mongoose.disconnect();
-  //wtf.dump();
-  //log();
-  //console.log("process._getActiveHandles()", process._getActiveHandles());
+after((done) => {
+  mongoose.disconnect();
+  done();
 });
 
 describe("GET /api/users", () => {
