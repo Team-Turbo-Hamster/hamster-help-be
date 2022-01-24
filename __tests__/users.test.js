@@ -8,7 +8,7 @@ const runSeed = require("../db/seeds/seed");
 const mongoose = require("mongoose");
 
 before(async function () {
-  this.timeout(30000);
+  this.timeout = 30000;
   return await runSeed();
 });
 
