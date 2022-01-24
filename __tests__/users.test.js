@@ -12,8 +12,8 @@ before(async function () {
   return await runSeed();
 });
 
-after(function () {
-  mongoose.disconnect();
+after(async function () {
+  await mongoose.disconnect();
 });
 
 describe("GET /api/users", () => {
