@@ -63,4 +63,16 @@ describe("/api/tickets", function () {
     expect(ticket).to.have.property("resolved");
     expect(ticket.resolved).to.be.false;
   }).timeout(30000);
+
+  it("GET - 400: if any fields are missing on creation", async () => {
+    const ticketBody = {
+      title: "Ticket Tittleasdsadaaaaa",
+    };
+
+    const {
+      body: { msg },
+    } = await request(app).post("/api/tickets").send(ticketBody).expect(400);
+
+    expect(msg).to.have.string("Ticket fields missing");
+  }).timeout(30000);
 });
