@@ -8,22 +8,22 @@ const mongoose = require("mongoose");
 suite("users routes", function () {
   this.timeout(30000);
 
+  before(function (done) {
+    runSeed()
+      .then(() => {
+        done();
+      })
+      .catch((err) => {
+        console.error(err);
+        done();
+      });
+  });
+
+  after(function () {
+    mongoose.disconnect();
+  });
+
   describe("GET /api/users", function () {
-    before(function (done) {
-      runSeed()
-        .then(() => {
-          done();
-        })
-        .catch((err) => {
-          console.error(err);
-          done();
-        });
-    });
-
-    after(function () {
-      mongoose.disconnect();
-    });
-
     it("should respond with an array of users", async () => {
       await request(app)
         .get("/api/users")
@@ -44,23 +44,6 @@ suite("users routes", function () {
   });
 
   describe("POST /api/users", function () {
-    this.timeout(30000);
-
-    before(function (done) {
-      runSeed()
-        .then(() => {
-          done();
-        })
-        .catch((err) => {
-          console.error(err);
-          done();
-        });
-    });
-
-    after(function () {
-      mongoose.disconnect();
-    });
-
     it("should respond with a 201 and the new user when supplied with valid data", async () =>
       await request(app)
         .post("/api/users")
