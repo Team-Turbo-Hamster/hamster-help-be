@@ -9,6 +9,8 @@ const io = require("./servers/socket.js")(
   passport
 );
 
+console.log(process.env.DATABASE, "================");
+
 mongoose
   .connect(process.env.DATABASE, {
     useNewUrlParser: true,

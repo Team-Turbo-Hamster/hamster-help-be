@@ -5,7 +5,11 @@ const { v4: uuidv4 } = require("uuid");
 const session = require("express-session");
 const morgan = require("morgan");
 const apiRouter = require("../routes/apiRouter");
-const { handleCustomErrors, handleServerErrors } = require("../errors");
+const {
+  handleCustomErrors,
+  handleServerErrors,
+  handleMongooseErrors,
+} = require("../errors");
 const sessionMiddleware = session({
   secret: uuidv4(),
   resave: false,
@@ -17,8 +21,13 @@ app.use(express.urlencoded({ limit: "50mb", extended: true }));
 app.use(cors());
 app.use(sessionMiddleware);
 app.use("/api", apiRouter);
-app.use("", (req, res, next) => next({ status: 404, msg: "Not Found" }));
+// app.use("", (req, res, next) => next({ status: 404, msg: "Not Found" }));
+app.all("*", (req, res) => {
+  res.status(404).send({ msg: "Path not found!" });
+});
+
 app.use(handleCustomErrors);
+app.use(handleMongooseErrors);
 app.use(handleServerErrors);
 
 module.exports = { app, sessionMiddleware };

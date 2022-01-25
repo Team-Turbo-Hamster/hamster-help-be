@@ -43,14 +43,14 @@ const ticketSchema = new mongoose.Schema(
   }
 );
 
-ticketSchema.pre(/^find/, function (next) {
-  this.populate({
-    path: "user",
-    select: "name avatar role created_at",
-  });
+// ticketSchema.pre(/^find/, function (next) {
+//   this.populate({
+//     path: "user",
+//     select: "name avatar role created_at",
+//   });
 
-  next();
-});
+//   next();
+// });
 
 const Ticket = mongoose.model("Ticket", ticketSchema);
 
