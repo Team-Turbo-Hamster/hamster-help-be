@@ -192,4 +192,38 @@ suite("/api/tickets", function () {
 
     //TODO: test for attempt of another user trying to delete
   });
+
+  describe("PATCH /api/tickets/:ticket_id/resolve", () => {
+    it("200: when resolving a ticket", async () => {
+      const {
+        body: { tickets },
+      } = await request(app).get(`/api/tickets`).expect(200);
+
+      const ticketId = tickets[1]._id;
+      const {
+        body: { ticket },
+      } = await request(app)
+        .patch(`/api/tickets/${ticketId}/resolve`)
+        .expect(200);
+
+      assert.isTrue(ticket.resolved);
+    });
+  });
+
+  describe("PATCH /api/tickets/:ticket_id/unresolve", () => {
+    it("200: when unResolving a ticket", async () => {
+      const {
+        body: { tickets },
+      } = await request(app).get(`/api/tickets`).expect(200);
+
+      const ticketId = tickets[1]._id;
+      const {
+        body: { ticket },
+      } = await request(app)
+        .patch(`/api/tickets/${ticketId}/unresolve`)
+        .expect(200);
+
+      assert.isFalse(ticket.resolved);
+    });
+  });
 });

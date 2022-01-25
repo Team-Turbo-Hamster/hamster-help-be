@@ -1,3 +1,4 @@
+const { promise } = require("bcrypt/promises");
 const { rejectQuery } = require("../errors/rejectQuery");
 const Ticket = require("../models/ticket.model");
 const User = require("../models/user.model");
@@ -93,6 +94,48 @@ exports.removeTicket = async (req, res, next) => {
   try {
     const ticket = await Ticket.findByIdAndDelete(ticket_id);
     res.status(204).send({ msg: "Ticket deleted successfully" });
+  } catch (error) {
+    next(error);
+  }
+};
+
+exports.resolveTicket = async (req, res, next) => {
+  //TODO: only tutors can resolve (needs protection route)
+  const { ticket_id } = req.params;
+  console.log(ticket_id);
+  try {
+    const ticket = await Ticket.findByIdAndUpdate(
+      ticket_id,
+      {
+        $set: { resolved: true },
+      },
+      {
+        new: true,
+      }
+    );
+
+    res.status(200).send({ ticket });
+  } catch (error) {
+    next(error);
+  }
+};
+
+exports.unResolveTicket = async (req, res, next) => {
+  //TODO: only tutors can resolve (needs protection route)
+  const { ticket_id } = req.params;
+  console.log(ticket_id);
+  try {
+    const ticket = await Ticket.findByIdAndUpdate(
+      ticket_id,
+      {
+        $set: { resolved: false },
+      },
+      {
+        new: true,
+      }
+    );
+
+    res.status(200).send({ ticket });
   } catch (error) {
     next(error);
   }

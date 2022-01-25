@@ -6,6 +6,8 @@ const {
   getTicketById,
   updateTicket,
   removeTicket,
+  resolveTicket,
+  unResolveTicket,
 } = require("../controllers/tickets.controllers");
 
 ticketRouter.route("/").get(getAllTickets).post(createTicket);
@@ -14,5 +16,8 @@ ticketRouter
   .get(getTicketById)
   .patch(updateTicket)
   .delete(removeTicket);
+
+ticketRouter.route("/:ticket_id/resolve").patch(resolveTicket);
+ticketRouter.route("/:ticket_id/unresolve").patch(unResolveTicket);
 
 module.exports = ticketRouter;
