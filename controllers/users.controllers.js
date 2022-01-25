@@ -1,3 +1,4 @@
+const { encryptPassword } = require("../api/password");
 const User = require("../models/user.model");
 const { cloudinary } = require("../utils/cloudinary");
 
@@ -19,7 +20,10 @@ exports.createUser = async (req, res, next) => {
       userFields.avatar = uploadedRes.public_id;
     }
 
-    const user = await User.create(userFields);
+    const user = await User.create({
+      ...userFields,
+      password: await encryptPassword(userFields.password),
+    });
     res.status(201).send({ user });
   } catch (error) {
     console.log(error);

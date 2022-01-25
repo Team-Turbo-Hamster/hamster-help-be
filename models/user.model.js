@@ -18,6 +18,7 @@ const userSchema = new mongoose.Schema(
     password: {
       type: String,
       required: [true, "Please provide a valid password"],
+      select: false,
     },
     created_at: {
       type: Date,
