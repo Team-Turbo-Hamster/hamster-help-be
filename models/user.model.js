@@ -1,5 +1,6 @@
 const mongoose = require("mongoose");
 const validator = require("validator");
+const { encryptPassword } = require("../api/password");
 
 const userSchema = new mongoose.Schema(
   {
@@ -17,7 +18,6 @@ const userSchema = new mongoose.Schema(
     },
     password: {
       type: String,
-      required: [true, "Please provide a valid password"],
       select: false,
     },
     created_at: {
@@ -39,6 +39,21 @@ const userSchema = new mongoose.Schema(
     toObject: { virtuals: true },
   }
 );
+
+userSchema.pre("save", function (next) {
+  const user = this;
+
+  if (!user.isModified("password")) return next();
+
+  encryptPassword(user.password)
+    .then((encrypted) => {
+      user.password = encrypted.toString();
+      next();
+    })
+    .catch((err) => {
+      next(err);
+    });
+});
 
 userSchema.pre(/^find/, function (next) {
   this.populate({

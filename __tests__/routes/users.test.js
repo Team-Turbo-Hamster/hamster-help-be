@@ -75,13 +75,23 @@ suite("users routes", function () {
           expect(user).to.have.property("name");
           expect(user).to.have.property("email");
           expect(user).to.have.property("created_at");
-          expect(user).to.have.property("avatar");
           expect(user).to.have.property("role");
           expect(user).to.have.property("tickets");
           // We never EVER want to have this retrievable from a web endpoint
           expect(user).not.to.have.property("password");
         })).timeout(30000);
 
-    it("should respond with an error if invalid user credentials are supplied", () => {});
+    it("should respond with an error if invalid user credentials are supplied", async () => {
+      await request(app)
+        .post("/api/users")
+        .send({
+          name: "Test Person",
+        })
+        .expect(400)
+        .then((response) => {
+          response = null;
+          //
+        });
+    });
   });
 });

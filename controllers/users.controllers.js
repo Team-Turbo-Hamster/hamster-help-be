@@ -10,7 +10,9 @@ exports.getAllUsers = async (req, res, next) => {
 exports.createUser = async (req, res, next) => {
   try {
     const { avatar } = req.body;
-    const userFields = { ...req.body };
+    const userFields = {
+      ...req.body,
+    };
 
     if (avatar) {
       const uploadedRes = await cloudinary.uploader.upload(avatar, {
@@ -20,12 +22,16 @@ exports.createUser = async (req, res, next) => {
       userFields.avatar = uploadedRes.public_id;
     }
 
-    const user = await User.create({
-      ...userFields,
-      password: await encryptPassword(userFields.password),
-    });
+    const user = (
+      await User.create({
+        ...userFields,
+      })
+    ).toObject();
+
+    delete user.password;
+
     res.status(201).send({ user });
   } catch (error) {
-    console.log(error);
+    next({ status: 400, msg: error.msg });
   }
 };
