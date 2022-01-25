@@ -1,4 +1,3 @@
-const env = require(`../${process.env.NODE_ENV}-data/users-tickets.js`);
 const runSeed = require("./seed");
 
 runSeed()
