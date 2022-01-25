@@ -10,7 +10,7 @@ module.exports = (httpServer, sessionMiddleware, passport) => {
   });
 
   io.use(wrap(sessionMiddleware));
-  /*  io.use(wrap(passport.initialize()));
+  io.use(wrap(passport.initialize()));
   io.use(wrap(passport.session()));
   io.use((socket, next) => {
     if (socket.request.user) {
@@ -18,7 +18,7 @@ module.exports = (httpServer, sessionMiddleware, passport) => {
     } else {
       next(new Error("unauthorized"));
     }
-  });*/
+  });
 
   io.on("connection", (socket) => {
     // If you want to immediately trigger something on first connection, add it here

@@ -8,7 +8,7 @@ const mongoose = require("mongoose");
 suite("users routes", function () {
   this.timeout(30000);
 
-  before(function (done) {
+  before((done) => {
     runSeed()
       .then(() => {
         done();
@@ -19,8 +19,9 @@ suite("users routes", function () {
       });
   });
 
-  after(function () {
+  after((done) => {
     mongoose.disconnect();
+    done();
   });
 
   describe("GET /api/users", function () {
@@ -62,7 +63,7 @@ suite("users routes", function () {
           expect(user).to.have.property("tickets");
           // We never EVER want to have this retrievable from a web endpoint
           expect(user).not.to.have.property("password");
-        })).timeout(30000);
+        }));
 
     it("should respond with an error if invalid user credentials are supplied", async () => {
       await request(app)

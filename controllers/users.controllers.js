@@ -35,3 +35,11 @@ exports.createUser = async (req, res, next) => {
     next({ status: 400, msg: error.msg });
   }
 };
+
+exports.loginUser = async (req, res, next) => {
+  try {
+    res.sendStatus(200);
+  } catch (err) {
+    next({ status: 400, msg: error.msg });
+  }
+};

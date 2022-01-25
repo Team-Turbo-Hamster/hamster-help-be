@@ -3,15 +3,27 @@ const cors = require("cors");
 const app = express();
 const { v4: uuidv4 } = require("uuid");
 const session = require("express-session");
-const morgan = require("morgan");
 const apiRouter = require("../routes/apiRouter");
 const { handleCustomErrors, handleServerErrors } = require("../errors");
+const MongoDBStore = require("connect-mongodb-session")(session);
+const store = new MongoDBStore({
+  uri: process.env.DATABASE,
+  collection: "sessions",
+});
+
+store.on("error", (error) => {
+  console.error(error);
+});
+
 const sessionMiddleware = session({
   secret: uuidv4(),
-  resave: false,
-  saveUninitialized: false,
+  resave: true,
+  saveUninitialized: true,
+  store,
+  cookie: {
+    maxAge: 1000 * 60 * 60 * 24 * 7, // 1 week
+  },
 });
-app.use(morgan("combined"));
 app.use(express.json({ limit: "50mb" }));
 app.use(express.urlencoded({ limit: "50mb", extended: true }));
 app.use(cors());
