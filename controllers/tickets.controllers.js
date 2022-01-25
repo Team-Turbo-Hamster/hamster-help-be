@@ -62,3 +62,22 @@ exports.getTicketByUserId = async (req, res, next) => {
     next(error);
   }
 };
+
+exports.updateTicket = async (req, res, next) => {
+  const { ticket_id } = req.params;
+  const { title, body } = req.body;
+  try {
+    if (!body || !title) {
+      await rejectQuery("Ticket fields missing", 400);
+    }
+
+    const ticket = await Ticket.findByIdAndUpdate(ticket_id, req.body, {
+      new: true,
+      runValidators: true,
+    });
+
+    res.status(200).send({ ticket });
+  } catch (error) {
+    next(error);
+  }
+};
