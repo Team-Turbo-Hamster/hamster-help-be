@@ -17,7 +17,11 @@ app.use(express.urlencoded({ limit: "50mb", extended: true }));
 app.use(cors());
 app.use(sessionMiddleware);
 app.use("/api", apiRouter);
-app.use("", (req, res, next) => next({ status: 404, msg: "Not Found" }));
+// app.use("", (req, res, next) => next({ status: 404, msg: "Not Found" }));
+app.all("*", (req, res) => {
+  res.status(404).send({ msg: "Path not found!" });
+});
+
 app.use(handleCustomErrors);
 app.use(handleServerErrors);
 
