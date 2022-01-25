@@ -25,3 +25,15 @@ exports.createUser = async (req, res, next) => {
     console.log(error);
   }
 };
+
+exports.getUserById = async (req, res, next) => {
+  try {
+    const { user_id } = req.params;
+
+    const user = await User.findById(user_id);
+
+    res.status(200).send({ user });
+  } catch (error) {
+    console.log(error);
+  }
+};
