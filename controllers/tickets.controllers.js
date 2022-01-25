@@ -45,6 +45,10 @@ exports.getTicketById = async (req, res, next) => {
   try {
     const ticket = await Ticket.findById(ticket_id);
 
+    if (!ticket) {
+      await rejectQuery("Not Found", 404);
+    }
+
     res.status(200).send({ ticket });
   } catch (error) {
     next(error);
@@ -77,6 +81,18 @@ exports.updateTicket = async (req, res, next) => {
     });
 
     res.status(200).send({ ticket });
+  } catch (error) {
+    next(error);
+  }
+};
+
+exports.removeTicket = async (req, res, next) => {
+  //TODO: protect so only owner can delete a ticket/ tutor???
+
+  const { ticket_id } = req.params;
+  try {
+    const ticket = await Ticket.findByIdAndDelete(ticket_id);
+    res.status(204).send({ msg: "Ticket deleted successfully" });
   } catch (error) {
     next(error);
   }

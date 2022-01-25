@@ -156,7 +156,7 @@ suite("/api/tickets", function () {
       expect(ticket.body).to.have.string(updatedTicket.body);
     });
 
-    it.only("400: when updating ticket with missing fields", async () => {
+    it("400: when updating ticket with missing fields", async () => {
       const {
         body: { tickets },
       } = await request(app).get(`/api/tickets`).expect(200);
@@ -173,5 +173,23 @@ suite("/api/tickets", function () {
     });
   });
 
-  describe("DELETE /api/tickets/:ticket_id", () => {});
+  describe("DELETE /api/tickets/:ticket_id", () => {
+    it("204: when deleting a ticket", async () => {
+      const {
+        body: { tickets },
+      } = await request(app).get(`/api/tickets`).expect(200);
+
+      const ticketId = tickets[0]._id;
+
+      await request(app).delete(`/api/tickets/${ticketId}`).expect(204);
+
+      const {
+        body: { msg },
+      } = await request(app).get(`/api/tickets/${ticketId}`).expect(404);
+
+      expect(msg).to.have.string("Not Found");
+    });
+
+    //TODO: test for attempt of another user trying to delete
+  });
 });
