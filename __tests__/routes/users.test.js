@@ -1,7 +1,7 @@
 const { suite, describe, it } = require("mocha");
 const expect = require("chai").expect;
 const request = require("supertest");
-const { app } = require("../../servers/app");
+const app = require("../../servers/app");
 const runSeed = require("../../db/seeds/seed");
 const mongoose = require("mongoose");
 const userModel = require("../../models/user.model");
@@ -15,8 +15,7 @@ suite("users routes", function () {
         done();
       })
       .catch((err) => {
-        console.error(err);
-        done();
+        done(err);
       });
   });
 
@@ -90,8 +89,9 @@ suite("users routes", function () {
       });
       await request(app)
         .post("/api/users/authenticate")
-        .send({ username: "test1@test.com", password: "password1" })
-        .expect(200);
+        .send({ email: "test1@test.com", password: "password1" })
+        .expect(200)
+        .then(({ body: { jwt } }) => {});
     });
     it("should respond with an error to a login with existent user and incorrect password", async () => {
       await userModel.create({
@@ -102,11 +102,9 @@ suite("users routes", function () {
       });
       await request(app)
         .post("/api/users/authenticate")
-        .send({ username: "test1@test.com", password: "wrongpassword" })
+        .send({ email: "test1@test.com", password: "wrongpassword" })
         .expect(403)
-        .then(({ body: { user } }) => {
-          console.log(user);
-        });
+        .then(() => {});
     });
   });
 });

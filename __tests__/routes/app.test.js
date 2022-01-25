@@ -1,7 +1,6 @@
 const { suite, describe, it } = require("mocha");
-const expect = require("chai").expect;
 const request = require("supertest");
-const { app } = require("../../servers/app");
+const app = require("../../servers/app");
 
 suite("app routes", () => {
   describe("GET /api/sir-not-appearing/in-this-app", () => {

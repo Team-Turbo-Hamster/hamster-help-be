@@ -22,23 +22,26 @@ const runSeed = async () => {
 
   const users = await User.find();
 
-  users.forEach(async (user) => {
-    const userTickets = userData.find(
-      (seedUser) => seedUser.email === user.email
-    ).tickets;
+  for (const user of users) {
+    const seedUser = userData.find(
+      (currentSeedUser) => currentSeedUser.email == user.email
+    );
 
-    if (userTickets.length > 0) {
-      await Ticket.insertMany(
-        userTickets.map(({ title, body, tags, image }) => ({
+    if (seedUser.tickets) {
+      for (const seedTicket of seedUser.tickets) {
+        const { title, body, tags, image } = seedTicket;
+        const ticket = await Ticket.create({
           user: mongoose.Types.ObjectId(user._id),
           title,
           body,
           tags,
           image,
-        }))
-      );
+        });
+        user.tickets.push(mongoose.Types.ObjectId(ticket._id));
+        await user.save();
+      }
     }
-  });
+  }
 };
 
 module.exports = runSeed;

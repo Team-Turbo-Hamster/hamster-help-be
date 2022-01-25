@@ -55,15 +55,15 @@ userSchema.pre("save", function (next) {
     });
 });
 
-userSchema.pre(/^find/, function (next) {
-  this.populate({
-    path: "tickets",
-    match: { resolved: false },
-    select: "title body tags zoomLink image created_at resolved",
-  });
+// userSchema.pre(/^find/, function (next) {
+//   this.populate({
+//     path: "tickets",
+//     match: { resolved: false },
+//     select: "title body tags zoomLink image created_at resolved",
+//   });
 
-  next();
-});
+//   next();
+// });
 
 const User = mongoose.model("User", userSchema);
 

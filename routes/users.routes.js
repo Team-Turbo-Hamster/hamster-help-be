@@ -7,6 +7,6 @@ const {
 } = require("../controllers/users.controllers");
 
 usersRouter.route("/").get(getAllUsers).post(createUser);
-usersRouter.post("/authenticate", authenticateUser);
+usersRouter.route("/authenticate").post(authenticateUser);
 
 module.exports = usersRouter;
