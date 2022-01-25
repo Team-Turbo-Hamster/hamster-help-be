@@ -1,9 +1,4 @@
 const jwt = require("jsonwebtoken");
-const ENV = process.env.NODE_ENV || "development";
-
-require("dotenv").config({
-  debug: true,
-});
 
 if (!process.env.PRIVATE_KEY && !process.env.PUBLIC_KEY) {
   throw new Error(

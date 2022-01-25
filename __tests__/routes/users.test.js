@@ -4,6 +4,7 @@ const request = require("supertest");
 const { app } = require("../../servers/app");
 const runSeed = require("../../db/seeds/seed");
 const mongoose = require("mongoose");
+const userModel = require("../../models/user.model");
 
 suite("users routes", function () {
   this.timeout(30000);
@@ -75,6 +76,36 @@ suite("users routes", function () {
         .then((response) => {
           response = null;
           //
+        });
+    });
+  });
+
+  describe("POST /api/users/authenticate", function () {
+    it("should respond positively to a login with existent user and correct password", async () => {
+      await userModel.create({
+        email: "test1@test.com",
+        name: "Mr Test",
+        password: "password1",
+        role: "Student",
+      });
+      await request(app)
+        .post("/api/users/authenticate")
+        .send({ username: "test1@test.com", password: "password1" })
+        .expect(200);
+    });
+    it("should respond with an error to a login with existent user and incorrect password", async () => {
+      await userModel.create({
+        email: "test2@test.com",
+        name: "Mr Test2",
+        password: "password2",
+        role: "Student",
+      });
+      await request(app)
+        .post("/api/users/authenticate")
+        .send({ username: "test1@test.com", password: "wrongpassword" })
+        .expect(403)
+        .then(({ body: { user } }) => {
+          console.log(user);
         });
     });
   });

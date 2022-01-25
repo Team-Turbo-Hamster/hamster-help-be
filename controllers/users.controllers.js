@@ -1,5 +1,5 @@
-const { encryptPassword } = require("../api/password");
 const User = require("../models/user.model");
+const token = require("../api/token");
 const { cloudinary } = require("../utils/cloudinary");
 
 exports.getAllUsers = async (req, res, next) => {
@@ -30,16 +30,16 @@ exports.createUser = async (req, res, next) => {
 
     delete user.password;
 
-    res.status(201).send({ user });
+    const jwt = token.makeToken(user);
+
+    res.status(201).send({ jwt });
   } catch (error) {
     next({ status: 400, msg: error.msg });
   }
 };
 
-exports.loginUser = async (req, res, next) => {
-  try {
-    res.sendStatus(200);
-  } catch (err) {
-    next({ status: 400, msg: error.msg });
-  }
+exports.authenticateUser = async (req, res, next) => {
+  console.log(req, res);
+
+  res.status(200).send(req.user);
 };

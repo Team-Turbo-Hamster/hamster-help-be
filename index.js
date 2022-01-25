@@ -1,13 +1,8 @@
 const http = require("http");
-const { app, sessionMiddleware } = require("./servers/app.js");
+const app = require("./servers/app.js");
 const httpServer = http.createServer(app);
-const passport = require("passport");
 const mongoose = require("mongoose");
-const io = require("./servers/socket.js")(
-  httpServer,
-  sessionMiddleware,
-  passport
-);
+const io = require("./servers/socket.js")(httpServer);
 
 mongoose
   .connect(process.env.DATABASE, {
