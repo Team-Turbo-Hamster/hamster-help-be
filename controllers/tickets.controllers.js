@@ -16,7 +16,7 @@ exports.createTicket = async (req, res, next) => {
       user: userId,
     });
 
-    const user = await User.findByIdAndUpdate(
+    await User.findByIdAndUpdate(
       userId,
       {
         $push: { tickets: ticket.id },
@@ -36,6 +36,21 @@ exports.getAllTickets = async (req, res, next) => {
 
     res.status(200).send({ tickets });
   } catch (error) {
-    console.log(error);
+    next(error);
+  }
+};
+
+exports.getTicketById = async (req, res, next) => {
+  const { ticket_id } = req.params;
+  try {
+    const ticket = await Ticket.findById(ticket_id);
+    console.log(ticket, "00000");
+    if (!ticket) {
+      await rejectQuery("Invalid ticket id", 404);
+    }
+
+    res.status(200).send({ ticket });
+  } catch (error) {
+    next(error);
   }
 };

@@ -42,7 +42,34 @@ describe("/api/tickets", function () {
     });
   }).timeout(30000);
 
-  it("GET - 201: should create and respond with the ticket created", async () => {
+  it("GET - 200: get a ticket by id", async () => {
+    //I need to query for all tickets first to get a valid ID
+    const {
+      body: { tickets },
+    } = await request(app).get("/api/tickets").expect(200);
+
+    const {
+      body: { ticket },
+    } = await request(app).get(`/api/tickets/${tickets[0]._id}`).expect(200);
+
+    expect(ticket).to.have.property("title");
+    expect(ticket).to.have.property("user");
+    expect(ticket).to.have.property("body");
+    expect(ticket).to.have.property("tags");
+    expect(ticket).to.have.property("images");
+    expect(ticket).to.have.property("created_at");
+    expect(ticket).to.have.property("resolved");
+  }).timeout(30000);
+
+  it("GET - 404: get a ticket by id not found", async () => {
+    const {
+      body: { msg },
+    } = await request(app).get(`/api/tickets/23455yhgf343565tgfr`).expect(404);
+
+    console.log(msg, "====================");
+  }).timeout(30000);
+
+  it("POST - 201: should create and respond with the ticket created", async () => {
     const ticketBody = {
       title: "Ticket Tittleasdsadaaaaa",
       body: "bodyyyyyyssss",
@@ -64,7 +91,7 @@ describe("/api/tickets", function () {
     expect(ticket.resolved).to.be.false;
   }).timeout(30000);
 
-  it("GET - 400: if any fields are missing on creation", async () => {
+  it("POST - 400: if any fields are missing on creation", async () => {
     const ticketBody = {
       title: "Ticket Tittleasdsadaaaaa",
     };

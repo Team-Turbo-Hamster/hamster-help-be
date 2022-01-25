@@ -1,10 +1,12 @@
 const express = require("express");
-const userRouter = express.Router();
+const ticketRouter = express.Router();
 const {
   createTicket,
   getAllTickets,
+  getTicketById,
 } = require("../controllers/tickets.controllers");
 
-userRouter.route("/").get(getAllTickets).post(createTicket);
+ticketRouter.route("/").get(getAllTickets).post(createTicket);
+ticketRouter.route("/:ticket_id").get(getTicketById);
 
-module.exports = userRouter;
+module.exports = ticketRouter;
