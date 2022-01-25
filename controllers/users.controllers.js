@@ -29,9 +29,9 @@ exports.createUser = async (req, res, next) => {
 exports.getUserById = async (req, res, next) => {
   try {
     const { user_id } = req.params;
-
+    console.log(user_id);
     const user = await User.findById(user_id);
-
+    console.log(user);
     res.status(200).send({ user });
   } catch (error) {
     console.log(error);

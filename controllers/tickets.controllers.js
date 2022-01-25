@@ -3,7 +3,7 @@ const Ticket = require("../models/ticket.model");
 const User = require("../models/user.model");
 
 exports.createTicket = async (req, res, next) => {
-  const userId = "61efbf0c773c5efadc63441c";
+  const userId = "61efeb4f385093713132334c";
   const { body, title } = req.body;
 
   try {
@@ -44,12 +44,20 @@ exports.getTicketById = async (req, res, next) => {
   const { ticket_id } = req.params;
   try {
     const ticket = await Ticket.findById(ticket_id);
-    console.log(ticket, "00000");
-    if (!ticket) {
-      await rejectQuery("Invalid ticket id", 404);
-    }
 
     res.status(200).send({ ticket });
+  } catch (error) {
+    next(error);
+  }
+};
+
+exports.getTicketByUserId = async (req, res, next) => {
+  const { user_id } = req.params;
+
+  try {
+    const tickets = await Ticket.find({ user: { $eq: user_id } });
+
+    res.status(200).send({ tickets });
   } catch (error) {
     next(error);
   }
