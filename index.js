@@ -4,6 +4,8 @@ const httpServer = http.createServer(app);
 const io = require("./servers/socket.js")(httpServer);
 const mongoose = require("mongoose");
 
+console.log(process.env.DATABASE, "================");
+
 mongoose
   .connect(process.env.DATABASE, {
     useNewUrlParser: true,
