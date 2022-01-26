@@ -6,6 +6,7 @@ const { suite } = require("mocha");
 const { expect } = require("chai");
 const User = require("../../models/user.model");
 const mongoose = require("mongoose");
+const jwt = require("../../api/jwt");
 const client = new Client("http://localhost:5000");
 
 suite.only("authentication server socket", function () {
@@ -55,6 +56,7 @@ suite.only("authentication server socket", function () {
     it("should emit an auth-result message with a token and user details when presented with a valid email and password", function (done) {
       client.on("auth-result", ({ avatar, role, email, _id, token, error }) => {
         expect(error).to.equal(undefined);
+        expect(jwt.verify(token, "test@test.com")).to.be.ok;
         done();
       });
       client.emit("authenticate", {

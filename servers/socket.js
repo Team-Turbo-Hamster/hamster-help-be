@@ -40,7 +40,6 @@ module.exports = (httpServer) => {
 
               socket.join("authenticated");
 
-              console.log("Sending auth-result");
               socket.emit("auth-result", {
                 name,
                 avatar,
