@@ -6,7 +6,7 @@
   "scripts": {
     "start": "nodemon index.js",
     "start-dev": "nodemon -- -r ./environment/development.js index.js",
-    "test": "export NODE_ENV=test && mocha --recursive __tests__",
+    "test": "mocha --require ./environment/test.js  --recursive --exit __tests__",
     "test-remote": "mocha --exit --recursive __tests__",
     "seed-dev": "node -r ./environment/development.js db/seeds/run-seed.js",
     "seed-prod": "NODE_ENV=production DATABASE=${heroku config:get DATABASE} db/seeds/run-seed.js"
@@ -31,12 +31,12 @@
     "bcrypt": "^5.0.1",
     "chai-as-promised": "^7.1.1",
     "cloudinary": "^1.28.1",
+    "connect-mongodb-session": "^3.1.1",
     "express": "^4.17.2",
-    "express-session": "^1.17.2",
     "joi": "^17.5.0",
     "jsonwebtoken": "^8.5.1",
     "mongoose": "^6.1.7",
-    "morgan": "^1.10.0",
+    "node-rsa": "^1.1.1",
     "nodemon": "^2.0.15",
     "passport": "^0.5.2",
     "socket.io": "^4.4.1",

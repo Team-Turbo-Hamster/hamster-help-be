@@ -1,13 +1,8 @@
 const http = require("http");
-const { app, sessionMiddleware } = require("./servers/app.js");
+const app = require("./servers/app.js");
 const httpServer = http.createServer(app);
-const passport = require("passport");
+const io = require("./servers/socket.js")(httpServer);
 const mongoose = require("mongoose");
-const io = require("./servers/socket.js")(
-  httpServer,
-  sessionMiddleware,
-  passport
-);
 
 console.log(process.env.DATABASE, "================");
 
@@ -16,7 +11,9 @@ mongoose
     useNewUrlParser: true,
     useUnifiedTopology: true,
   })
-  .then(() => console.log("DB connection successful"));
+  .then(() => {
+    console.log("DB connection successful");
+  });
 
 httpServer.listen(process.env.PORT, () => {
   console.log(

@@ -9,14 +9,8 @@ const runSeed = async () => {
     useUnifiedTopology: true,
   });
 
-  console.log("Removing existing data...");
-  console.log("> Removing Users...");
   await User.deleteMany();
-  console.log("> Removing Tickets...");
   await Ticket.deleteMany();
-  console.log("---> Completed");
-
-  console.log("Adding new users...");
   await User.insertMany(
     userData.map(({ name, email, avatar, role }) => ({
       name,
@@ -25,31 +19,29 @@ const runSeed = async () => {
       role,
     }))
   );
-  console.log("---> Completed");
 
-  console.log("Retrieving users from database...");
   const users = await User.find();
-  console.log("---> Completed");
 
-  console.log("Adding user tickets...");
-  users.forEach(async (user) => {
-    const userTickets = userData.find(
-      (seedUser) => seedUser.email === user.email
-    ).tickets;
+  for (const user of users) {
+    const seedUser = userData.find(
+      (currentSeedUser) => currentSeedUser.email == user.email
+    );
 
-    if (userTickets.length > 0) {
-      await Ticket.insertMany(
-        userTickets.map(({ title, body, tags, image }) => ({
+    if (seedUser.tickets) {
+      for (const seedTicket of seedUser.tickets) {
+        const { title, body, tags, image } = seedTicket;
+        const ticket = await Ticket.create({
           user: mongoose.Types.ObjectId(user._id),
           title,
           body,
           tags,
           image,
-        }))
-      );
+        });
+        user.tickets.push(mongoose.Types.ObjectId(ticket._id));
+        await user.save();
+      }
     }
-  });
-  console.log("---> Completed");
+  }
 };
 
 module.exports = runSeed;
