@@ -8,6 +8,7 @@ module.exports = (httpServer) => {
   });
 
   io.on("connection", (socket) => {
+    console.log("============");
     // If you want to immediately trigger something on first connection, add it here
     // e.g. socket.emit("greeting", {greeting: "Hello!"})
     // Add socket.on event listeners here
