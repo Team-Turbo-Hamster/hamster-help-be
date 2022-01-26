@@ -79,32 +79,32 @@ suite("users routes", function () {
     });
   });
 
-  describe("POST /api/users/authenticate", function () {
-    it("should respond positively to a login with existent user and correct password", async () => {
-      await userModel.create({
-        email: "test1@test.com",
-        name: "Mr Test",
-        password: "password1",
-        role: "Student",
-      });
-      await request(app)
-        .post("/api/users/authenticate")
-        .send({ email: "test1@test.com", password: "password1" })
-        .expect(200)
-        .then(({ body: { jwt } }) => {});
-    });
-    it("should respond with an error to a login with existent user and incorrect password", async () => {
-      await userModel.create({
-        email: "test2@test.com",
-        name: "Mr Test2",
-        password: "password2",
-        role: "Student",
-      });
-      await request(app)
-        .post("/api/users/authenticate")
-        .send({ email: "test1@test.com", password: "wrongpassword" })
-        .expect(403)
-        .then(() => {});
-    });
-  });
+  // describe("POST /api/users/authenticate", function () {
+  //   it("should respond positively to a login with existent user and correct password", async () => {
+  //     await userModel.create({
+  //       email: "test1@test.com",
+  //       name: "Mr Test",
+  //       password: "password1",
+  //       role: "Student",
+  //     });
+  //     await request(app)
+  //       .post("/api/users/authenticate")
+  //       .send({ email: "test1@test.com", password: "password1" })
+  //       .expect(200)
+  //       .then(({ body: { jwt } }) => {});
+  //   });
+  //   it("should respond with an error to a login with existent user and incorrect password", async () => {
+  //     await userModel.create({
+  //       email: "test2@test.com",
+  //       name: "Mr Test2",
+  //       password: "password2",
+  //       role: "Student",
+  //     });
+  //     await request(app)
+  //       .post("/api/users/authenticate")
+  //       .send({ email: "test1@test.com", password: "wrongpassword" })
+  //       .expect(403)
+  //       .then(() => {});
+  //   });
+  // });
 });

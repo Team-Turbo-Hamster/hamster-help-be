@@ -5,6 +5,8 @@ const User = require("../models/user.model");
 
 exports.createTicket = async (req, res, next) => {
   const { body, title } = req.body;
+  const io = req.app.get("socket.io");
+
   try {
     if (!body || !title) {
       await rejectQuery("Ticket fields missing", 400);
@@ -22,11 +24,8 @@ exports.createTicket = async (req, res, next) => {
       },
       { new: true }
     );
-    console.log(req.soServer);
-    // req.socket.to("auth").emit("newTicket", ticket);
     res.status(201).send({ ticket });
   } catch (error) {
-    console.log(error);
     next(error);
   }
 };
@@ -124,7 +123,7 @@ exports.resolveTicket = async (req, res, next) => {
 exports.unResolveTicket = async (req, res, next) => {
   //TODO: only tutors can resolve (needs protection route)
   const { ticket_id } = req.params;
-  console.log(ticket_id);
+
   try {
     const ticket = await Ticket.findByIdAndUpdate(
       ticket_id,

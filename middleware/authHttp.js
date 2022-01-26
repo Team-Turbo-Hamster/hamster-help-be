@@ -28,7 +28,7 @@ const isStudent = async (req, res, next) => {
     if (isAuth(req)) {
       const token = getToken(req);
       const decoded = jwt.decode(token);
-      console.log(decoded.payload);
+
       if (decoded.payload.role === "Student") {
         req.user = decoded.payload._id;
         next();

@@ -6,7 +6,7 @@ const app = require("../../servers/app");
 const runSeed = require("../../db/seeds/seed");
 const mongoose = require("mongoose");
 
-suite.only("/api/tickets", function () {
+suite("/api/tickets", function () {
   this.timeout(30000);
 
   before(function (done) {
