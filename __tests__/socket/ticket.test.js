@@ -19,6 +19,7 @@ suite.only("ticket server socket", function () {
       useNewUrlParser: true,
       useUnifiedTopology: true,
     });
+    console.log("Mongoose connected");
   });
   before(async () => {
     try {
@@ -51,7 +52,16 @@ suite.only("ticket server socket", function () {
   before((done) => {
     studentClient.on("connect", () => {
       console.log("Student Client connected");
+      done();
     });
+  });
+  before((done) => {
+    tutorClient.on("connect", () => {
+      console.log("Tutor Client connected");
+      done();
+    });
+  });
+  before((done) => {
     studentClient.on(SM.SENT_TO_CLIENT.ERROR, (error) => {
       console.log("Student failed to authenticate");
       console.log(error);
@@ -68,10 +78,6 @@ suite.only("ticket server socket", function () {
     });
   });
   before((done) => {
-    tutorClient.on("connect", () => {
-      console.log("Tutor Client connected");
-      done();
-    });
     tutorClient.on(SM.SENT_TO_CLIENT.ERROR, (error) => {
       console.log("Tutor failed to authenticate");
       console.log(error);
