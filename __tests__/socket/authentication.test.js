@@ -41,7 +41,6 @@ suite("authentication server socket", function () {
       });
     });
   });
-
   after(async () => {
     await User.deleteOne({ email: "test@test.com" });
     mongoose.disconnect();
@@ -80,7 +79,7 @@ suite("authentication server socket", function () {
         email: "test@test.com",
       });
     });
-    it("should emit an auth-result message when passed a password but no email", function (done) {
+    it("should emit an error message when passed a password but no email", function (done) {
       client.on(SM.SENT_TO_CLIENT.ERROR, ({ error }) => {
         expect(error.details[0].message).to.equal('"email" is required');
         done();
@@ -89,14 +88,12 @@ suite("authentication server socket", function () {
         password: "password",
       });
     });
-    it("should emit an auth-result message when passed a no email or password", function (done) {
+    it("should emit an error message when passed no email or password", function (done) {
       client.on(SM.SENT_TO_CLIENT.ERROR, ({ error }) => {
         expect(error.details[0].message).to.equal('"email" is required');
         done();
       });
-      client.emit(SM.SENT_FROM_CLIENT.AUTHENTICATE, {
-        password: "password",
-      });
+      client.emit(SM.SENT_FROM_CLIENT.AUTHENTICATE, {});
     });
   });
 });
