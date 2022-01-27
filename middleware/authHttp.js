@@ -62,4 +62,24 @@ const isTutor = async (req, res, next) => {
   }
 };
 
-module.exports = { isAuth, isStudent, isTutor };
+const isLoggedIn = async (req, res, next) => {
+  console.log("lol");
+  try {
+    if (hasToken(req)) {
+      const token = getToken(req);
+      const decoded = jwt.decode(token);
+      if (decoded && jwt.verify(token, decoded.payload.email)) {
+        req.user = decoded.payload._id;
+        next();
+      } else {
+        await rejectQuery("You do not have access, please log in 1", 401);
+      }
+    } else {
+      await rejectQuery("You do not have access, please log in 2", 401);
+    }
+  } catch (err) {
+    next(err);
+  }
+};
+
+module.exports = { isAuth, isStudent, isTutor, isLoggedIn };
