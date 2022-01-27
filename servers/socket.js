@@ -5,7 +5,7 @@ const SM = require("../socket-messages");
 const User = require("../models/user.model");
 const Joi = require("joi");
 const Ticket = require("../models/ticket.model");
-const authSocket = require("../middleware/authSocket");
+const { isStudent } = require("../middleware/authSocket");
 
 module.exports = (httpServer) => {
   const io = new socketio.Server(httpServer, {
@@ -75,10 +75,8 @@ module.exports = (httpServer) => {
       }
     });
 
-    socket.on(
-      SM.SENT_FROM_CLIENT.NEW_TICKET,
-      //authSocket.isAuth,
-      async ({ body, title, user }) => {
+    socket.on(SM.SENT_FROM_CLIENT.NEW_TICKET, (data) =>
+      isStudent(socket, data, async ({ body, title, user }) => {
         const ticketSchema = Joi.object({
           body: Joi.string().max(10000).required(),
           title: Joi.string().max(500).required(),
@@ -102,7 +100,7 @@ module.exports = (httpServer) => {
         } catch (error) {
           socket.emit(SM.SENT_TO_CLIENT.ERROR, { error });
         }
-      }
+      })
     );
   });
 

@@ -1,60 +1,58 @@
-const e = require("express");
 const jwt = require("../api/jwt");
+const SM = require("../socket-messages");
 
-const getSocketToken = (socket) => socket.auth.token;
-
-const isAuth = (token) => {
-  if (token) {
-    try {
-      const decoded = jwt.decode(token);
-
-      return jwt.verify(token, decoded.payload.email);
-    } catch (err) {
-      return false;
-    }
-  }
-
-  return false;
-};
-
-const isStudent = async (socket, next) => {
+const validToken = (token) => {
   try {
-    const token = getSocketToken(socket);
+    const decoded = jwt.decode(token);
 
-    if (isAuth(token)) {
-      const decoded = jwt.decode(token);
-      if (decoded.payload.role === "Student") {
-        req.user = decoded.payload._id;
-        next();
-      } else {
-        socket.emit("error", { msg: "User is not a student" });
-      }
-    } else {
-      socket.emit("error", { msg: "No token provided" });
+    if (jwt.verify(token, decoded.payload.email)) {
+      return true;
     }
-  } catch (err) {
-    next(err);
+
+    return false;
+  } catch (error) {
+    return false;
   }
 };
 
-const isTutor = async (socket, next) => {
-  try {
-    const token = getSocketToken(socket);
+const isAuth = (socket, { token }, next) => {
+  if (validToken(token)) {
+    return next(data);
+  } else {
+    return () => {
+      socket.emit(
+        SM.SEND_TO_CLIENT.ERROR,
+        new Error("User is not authenticated")
+      );
+    };
+  }
+};
 
-    if (isAuth(token)) {
+const isRole = (socket, data, next, role) => {
+  const { token } = data;
+
+  try {
+    if (validToken(token)) {
       const decoded = jwt.decode(token);
-      if (decoded.payload.role === "Tutor") {
-        req.user = decoded.payload._id;
-        next();
+      if (decoded.payload.role === role) {
+        return next(data);
       } else {
-        socket.emit("error", { msg: "User is not a tutor" });
+        throw new Error(`User is not a ${role}`);
       }
     } else {
-      socket.emit("error", { msg: "No token provided" });
+      throw new Error("User not authenticated");
     }
-  } catch (err) {
-    next(err);
+  } catch (error) {
+    return () => socket.emit(SM.SENT_TO_CLIENT.ERROR, { error });
   }
+};
+
+const isStudent = (socket, data, next) => {
+  return isRole(socket, data, next, "Student");
+};
+
+const isTutor = (socket, data, next) => {
+  return isRole(socket, data, next, "Tutor");
 };
 
 module.exports = { isAuth, isStudent, isTutor };
