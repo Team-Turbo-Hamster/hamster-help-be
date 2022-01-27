@@ -25,7 +25,7 @@ module.exports = (httpServer) => {
         const { value, error } = schema.validate({ email, password });
 
         if (error) {
-          socket.emit(SM.SENT_TO_CLIENT.AUTHENTICATE_RESULT, { error });
+          socket.emit(SM.SENT_TO_CLIENT.ERROR, { error });
         } else {
           const user = await User.findOne(
             { email },
@@ -41,7 +41,7 @@ module.exports = (httpServer) => {
 
               socket.join(SM.AUTHENTICATED_ROOM);
 
-              socket.emit(SM.SENT_TO_CLIENT.AUTHENTICATE_RESULT, {
+              socket.emit(SM.SENT_TO_CLIENT.AUTHENTICATED, {
                 name,
                 avatar,
                 role,
@@ -50,22 +50,32 @@ module.exports = (httpServer) => {
                 token,
               });
             } else {
-              socket.emit(SM.SENT_TO_CLIENT.AUTHENTICATE_RESULT, {
+              socket.emit(SM.SENT_TO_CLIENT.ERROR, {
                 error: "Invalid password",
               });
             }
           } else {
-            socket.emit(SM.SENT_TO_CLIENT.AUTHENTICATE_RESULT, {
+            socket.emit(SM.SENT_TO_CLIENT.ERROR, {
               error: "Invalid email",
             });
           }
         }
       } catch (err) {
-        console.log(err);
-        socket.emit(SM.SENT_TO_CLIENT.AUTHENTICATE_RESULT, {
+        socket.emit(SM.SENT_TO_CLIENT.ERROR, {
           error: "Unknown error",
         });
       }
+    });
+
+    socket.on(SM.SENT_FROM_CLIENT.REJOIN, ({ token }) => {
+      try {
+        const { email } = jwt.decode(token).payload;
+
+        if (jwt.verify(token, email)) {
+          socket.join(SM.AUTHENTICATED_ROOM);
+        } else {
+        }
+      } catch (err) {}
     });
   });
 

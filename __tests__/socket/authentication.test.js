@@ -54,11 +54,10 @@ suite("authentication server socket", function () {
   });
 
   describe(`socket.on("authenticate", {...})`, () => {
-    it("should emit an auth-result message with a token and user details when presented with a valid email and password", function (done) {
+    it('should emit an "authenticated" message with a token and user details when presented with a valid email and password', function (done) {
       client.on(
-        SM.SENT_TO_CLIENT.AUTHENTICATE_RESULT,
-        ({ avatar, role, email, _id, token, error }) => {
-          expect(error).to.equal(undefined);
+        SM.SENT_TO_CLIENT.AUTHENTICATED,
+        ({ avatar, role, email, _id, token }) => {
           expect(jwt.verify(token, "test@test.com")).to.be.ok;
           expect(avatar).to.equal("placeholder.jpg");
           expect(email).to.equal("test@test.com");
@@ -72,23 +71,18 @@ suite("authentication server socket", function () {
         password: "password",
       });
     });
-    it("should emit an auth-result message when passed an email but no password", function (done) {
-      client.on(
-        SM.SENT_TO_CLIENT.AUTHENTICATE_RESULT,
-        ({ avatar, role, email, _id, token, error }) => {
-          expect(error.details[0].message).to.equal('"password" is required');
-          expect(token).to.equal(undefined);
-          done();
-        }
-      );
+    it("should emit an error message when passed an email but no password", function (done) {
+      client.on(SM.SENT_TO_CLIENT.ERROR, ({ error }) => {
+        expect(error.details[0].message).to.equal('"password" is required');
+        done();
+      });
       client.emit(SM.SENT_FROM_CLIENT.AUTHENTICATE, {
         email: "test@test.com",
       });
     });
     it("should emit an auth-result message when passed a password but no email", function (done) {
-      client.on(SM.SENT_TO_CLIENT.AUTHENTICATE_RESULT, ({ token, error }) => {
+      client.on(SM.SENT_TO_CLIENT.ERROR, ({ error }) => {
         expect(error.details[0].message).to.equal('"email" is required');
-        expect(token).to.equal(undefined);
         done();
       });
       client.emit(SM.SENT_FROM_CLIENT.AUTHENTICATE, {
@@ -96,9 +90,8 @@ suite("authentication server socket", function () {
       });
     });
     it("should emit an auth-result message when passed a no email or password", function (done) {
-      client.on(SM.SENT_TO_CLIENT.AUTHENTICATE_RESULT, ({ token, error }) => {
+      client.on(SM.SENT_TO_CLIENT.ERROR, ({ error }) => {
         expect(error.details[0].message).to.equal('"email" is required');
-        expect(token).to.equal(undefined);
         done();
       });
       client.emit(SM.SENT_FROM_CLIENT.AUTHENTICATE, {
