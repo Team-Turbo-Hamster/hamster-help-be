@@ -61,8 +61,6 @@ exports.authenticateUser = async (req, res, next) => {
         const { name, avatar, role, email, _id } = user;
         const token = jwt.sign({ _id, avatar, role, email }, email);
 
-        io.join("auth");
-
         res.status(200).send({
           token,
           name,
@@ -85,8 +83,14 @@ exports.getUserById = async (req, res, next) => {
   try {
     const { user_id } = req.params;
     const user = await User.findById(user_id);
+    
     res.status(200).send({ user });
   } catch (error) {
     next(error);
   }
+};
+
+exports.getMe = async (req, res, next) => {
+  req.params.user_id = req.user;
+  next();
 };
