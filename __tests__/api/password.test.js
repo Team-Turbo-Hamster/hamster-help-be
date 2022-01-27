@@ -15,11 +15,6 @@ describe("encryptPassword", () => {
 
     expect(output).to.be.a("string");
   });
-  it("should throw an error when passed an empty password", async () => {
-    const input = "";
-
-    await expect(encryptPassword(input)).to.be.rejectedWith(Error);
-  });
 });
 
 describe("validatePassword", () => {

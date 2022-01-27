@@ -13,13 +13,6 @@ mongoose
     console.log("DB connection successful");
   });
 
-// io.on("connection", (socket) => {
-//   app.use((req, res, next) => {
-//     req.soServer = socket;
-//     next();
-//   });
-// });
-
 httpServer.listen(process.env.PORT, () => {
   console.log(
     `Express and Socket.io server running on port ${process.env.PORT}`
