@@ -31,6 +31,7 @@ suite.only("ticket server socket", function () {
         avatar: "placeholder.jpg",
         role: "Student",
       });
+      console.log(`Student ${student.id} created`);
       await User.deleteOne({ email: "tutor@test.com" });
       tutor = await User.create({
         email: "tutor@test.com",
@@ -39,6 +40,7 @@ suite.only("ticket server socket", function () {
         avatar: "placeholder.jpg",
         role: "Tutor",
       });
+      console.log(`Tutor ${tutor.id} created`);
     } catch (err) {
       console.log(err);
     }
