@@ -21,6 +21,7 @@ exports.createUser = async (req, res, next) => {
       avatar_img_location = uploadedRes.public_id;
     }
 
+    console.log("***********************************");
     const { created_at, tickets } = await User.create({
       avatar: avatar_img_location || "",
       name,
@@ -40,7 +41,8 @@ exports.createUser = async (req, res, next) => {
       },
     });
   } catch (error) {
-    next({ status: 400, msg: error.msg });
+    console.log(error);
+    next(error);
   }
 };
 
@@ -56,8 +58,10 @@ exports.authenticateUser = async (req, res, next) => {
       const isValid = await validatePassword(password, user.password);
 
       if (isValid) {
-        const { name, avatar, role, email } = user;
-        const token = jwt.sign({ user, avatar, role, email }, email);
+        const { name, avatar, role, email, _id } = user;
+        const token = jwt.sign({ _id, avatar, role, email }, email);
+
+        // req.socket.join("auth");
 
         res.status(200).send({
           token,
@@ -81,11 +85,17 @@ exports.authenticateUser = async (req, res, next) => {
 exports.getUserById = async (req, res, next) => {
   try {
     const { user_id } = req.params;
-    console.log(user_id);
+    console.log(user_id, "((((");
+
     const user = await User.findById(user_id);
-    console.log(user);
+
     res.status(200).send({ user });
   } catch (error) {
     console.log(error);
   }
+};
+
+exports.getMe = async (req, res, next) => {
+  req.params.user_id = req.user;
+  next();
 };

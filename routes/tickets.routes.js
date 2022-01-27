@@ -9,8 +9,12 @@ const {
   resolveTicket,
   unResolveTicket,
 } = require("../controllers/tickets.controllers");
+const authHttp = require("../middleware/authHttp");
 
-ticketRouter.route("/").get(getAllTickets).post(createTicket);
+ticketRouter
+  .route("/")
+  .get(getAllTickets)
+  .post(authHttp.isStudent, createTicket);
 ticketRouter
   .route("/:ticket_id")
   .get(getTicketById)

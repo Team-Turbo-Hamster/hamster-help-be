@@ -4,9 +4,7 @@ const Ticket = require("../models/ticket.model");
 const User = require("../models/user.model");
 
 exports.createTicket = async (req, res, next) => {
-  const userId = "61efeb4f385093713132334c";
   const { body, title } = req.body;
-
   try {
     if (!body || !title) {
       await rejectQuery("Ticket fields missing", 400);
@@ -14,19 +12,21 @@ exports.createTicket = async (req, res, next) => {
 
     const ticket = await Ticket.create({
       ...req.body,
-      user: userId,
+      user: req.user,
     });
 
     await User.findByIdAndUpdate(
-      userId,
+      req.user,
       {
         $push: { tickets: ticket.id },
       },
       { new: true }
     );
-
+    console.log(req.soServer);
+    // req.socket.to("auth").emit("newTicket", ticket);
     res.status(201).send({ ticket });
   } catch (error) {
+    console.log(error);
     next(error);
   }
 };
@@ -43,6 +43,7 @@ exports.getAllTickets = async (req, res, next) => {
 
 exports.getTicketById = async (req, res, next) => {
   const { ticket_id } = req.params;
+
   try {
     const ticket = await Ticket.findById(ticket_id);
 
