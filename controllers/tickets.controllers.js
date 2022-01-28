@@ -2,16 +2,40 @@ const { promise } = require("bcrypt/promises");
 const { rejectQuery } = require("../errors/rejectQuery");
 const Ticket = require("../models/ticket.model");
 const User = require("../models/user.model");
+const { cloudinary } = require("../utils/cloudinary");
+
+const uploadImages = async (images) => {
+  const uploadedImages = await Promise.all(
+    images.map(async (image) => {
+      const img = await cloudinary.uploader.upload(image, {
+        upload_preset: "tickets",
+      });
+
+      return img.public_id;
+    })
+  );
+
+  return uploadedImages;
+};
 
 exports.createTicket = async (req, res, next) => {
-  const { body, title } = req.body;
+  const { body, title, images } = req.body;
+
   try {
     if (!body || !title) {
       await rejectQuery("Ticket fields missing", 400);
     }
 
+    let uploadedImages = [];
+
+    if (images.length > 0) {
+      const data = await uploadImages(images);
+      uploadedImages = data;
+    }
+
     const ticket = await Ticket.create({
       ...req.body,
+      images: uploadedImages,
       user: req.user,
     });
 
@@ -22,7 +46,6 @@ exports.createTicket = async (req, res, next) => {
       },
       { new: true }
     );
-    console.log(req.soServer);
     // req.socket.to("auth").emit("newTicket", ticket);
     res.status(201).send({ ticket });
   } catch (error) {
