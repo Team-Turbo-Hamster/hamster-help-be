@@ -46,10 +46,8 @@ exports.createTicket = async (req, res, next) => {
       },
       { new: true }
     );
-    // req.socket.to("auth").emit("newTicket", ticket);
     res.status(201).send({ ticket });
   } catch (error) {
-    console.log(error);
     next(error);
   }
 };
@@ -147,7 +145,7 @@ exports.resolveTicket = async (req, res, next) => {
 exports.unResolveTicket = async (req, res, next) => {
   //TODO: only tutors can resolve (needs protection route)
   const { ticket_id } = req.params;
-  console.log(ticket_id);
+
   try {
     const ticket = await Ticket.findByIdAndUpdate(
       ticket_id,

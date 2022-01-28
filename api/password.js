@@ -1,37 +1,19 @@
-const Joi = require("joi");
 const bcrypt = require("bcrypt");
 const saltRounds = 10;
 
 const encryptPassword = async (plaintext) => {
-  const schema = Joi.string().min(8).max(100).required();
-  const { error } = schema.validate(plaintext);
+  const password = await bcrypt.hash(plaintext, saltRounds);
 
-  if (!error) {
-    const password = await bcrypt.hash(plaintext, saltRounds);
-
-    return password;
-  } else {
-    throw new Error(error);
-  }
+  return password;
 };
 
 const validatePassword = async (entered, encrypted) => {
-  const schema = Joi.object().keys({
-    entered: Joi.string().min(8).max(100).required(),
-    encrypted: Joi.string().min(8).max(100).required(),
-  });
-  const { error } = schema.validate({ entered, encrypted });
+  const result = await bcrypt.compare(entered, encrypted);
 
-  if (!error) {
-    const result = await bcrypt.compare(entered, encrypted);
-
-    if (result) {
-      return true;
-    } else {
-      return false;
-    }
+  if (result) {
+    return true;
   } else {
-    throw new Error(error);
+    return false;
   }
 };
 
