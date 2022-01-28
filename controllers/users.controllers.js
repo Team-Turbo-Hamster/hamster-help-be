@@ -10,7 +10,8 @@ exports.getAllUsers = async (req, res, next) => {
 
 exports.createUser = async (req, res, next) => {
   try {
-    const { avatar, name, email, password, role } = req.body;
+    console.log(req.body, "======================");
+    const { avatar, name, email, password, role, username } = req.body;
     let avatar_img_location;
 
     if (avatar) {
@@ -27,6 +28,7 @@ exports.createUser = async (req, res, next) => {
       email,
       password,
       role,
+      username,
     });
 
     res.status(201).send({
@@ -35,6 +37,7 @@ exports.createUser = async (req, res, next) => {
         name,
         email,
         role,
+        username,
         created_at,
         tickets,
       },
