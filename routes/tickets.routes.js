@@ -9,6 +9,8 @@ const {
   resolveTicket,
   unResolveTicket,
   getAllTicketsByTag,
+  getAllTicketsUnresolved,
+  getAllTicketsResolved,
 } = require("../controllers/tickets.controllers");
 const authHttp = require("../middleware/authHttp");
 
@@ -16,6 +18,10 @@ ticketRouter
   .route("/")
   .get(getAllTickets)
   .post(authHttp.isStudent, createTicket);
+
+ticketRouter.route("/resolved").get(getAllTicketsResolved);
+ticketRouter.route("/unresolved").get(getAllTicketsUnresolved);
+
 ticketRouter
   .route("/:ticket_id")
   .get(getTicketById)

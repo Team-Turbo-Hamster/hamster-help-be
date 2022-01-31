@@ -90,13 +90,29 @@ exports.getTicketByUserId = async (req, res, next) => {
   }
 };
 
-exports.getAllTicketsUnresolved = async (req, res, next) => {};
+exports.getAllTicketsUnresolved = async (req, res, next) => {
+  try {
+    const tickets = await Ticket.find({ resolved: { $eq: false } });
 
-exports.getAllTicketsResolved = async (req, res, next) => {};
+    res.status(200).send({ tickets });
+  } catch (error) {
+    next(error);
+  }
+};
 
-exports.getAllTicketsResolvedByUserId = async (req, res, next) => {};
+exports.getAllTicketsResolved = async (req, res, next) => {
+  try {
+    const tickets = await Ticket.find({ resolved: { $eq: true } });
 
-exports.getAllTicketsUnresolvedByUserId = async (req, res, next) => {};
+    res.status(200).send({ tickets });
+  } catch (error) {
+    next(error);
+  }
+};
+
+// exports.getAllTicketsResolvedByUserId = async (req, res, next) => {};
+
+// exports.getAllTicketsUnresolvedByUserId = async (req, res, next) => {};
 
 exports.getAllTicketsByTag = async (req, res, next) => {
   const { tag_name } = req.params;
@@ -155,6 +171,7 @@ exports.resolveTicket = async (req, res, next) => {
 
     res.status(200).send({ ticket });
   } catch (error) {
+    console.log(error);
     next(error);
   }
 };
