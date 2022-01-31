@@ -12,11 +12,12 @@ const runSeed = async () => {
   await User.deleteMany();
   await Ticket.deleteMany();
   await User.insertMany(
-    userData.map(({ name, email, avatar, role }) => ({
+    userData.map(({ username, name, email, avatar, role }) => ({
       name,
       email,
       avatar,
       role,
+      username,
     }))
   );
 
