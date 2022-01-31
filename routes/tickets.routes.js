@@ -8,6 +8,7 @@ const {
   removeTicket,
   resolveTicket,
   unResolveTicket,
+  getAllTicketsByTag,
 } = require("../controllers/tickets.controllers");
 const authHttp = require("../middleware/authHttp");
 
@@ -21,7 +22,13 @@ ticketRouter
   .patch(updateTicket)
   .delete(removeTicket);
 
-ticketRouter.route("/:ticket_id/resolve").patch(resolveTicket);
-ticketRouter.route("/:ticket_id/unresolve").patch(unResolveTicket);
+ticketRouter.route("/tag/:tag_name").get(getAllTicketsByTag);
+
+ticketRouter
+  .route("/:ticket_id/resolve")
+  .patch(authHttp.isTutor, resolveTicket);
+ticketRouter
+  .route("/:ticket_id/unresolve")
+  .patch(authHttp.isTutor, unResolveTicket);
 
 module.exports = ticketRouter;

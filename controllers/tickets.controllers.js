@@ -90,6 +90,25 @@ exports.getTicketByUserId = async (req, res, next) => {
   }
 };
 
+exports.getAllTicketsUnresolved = async (req, res, next) => {};
+
+exports.getAllTicketsResolved = async (req, res, next) => {};
+
+exports.getAllTicketsResolvedByUserId = async (req, res, next) => {};
+
+exports.getAllTicketsUnresolvedByUserId = async (req, res, next) => {};
+
+exports.getAllTicketsByTag = async (req, res, next) => {
+  const { tag_name } = req.params;
+
+  try {
+    const tickets = await Ticket.find({ tags: { $in: tag_name } });
+    res.status(200).send({ tickets });
+  } catch (error) {
+    next(error);
+  }
+};
+
 exports.updateTicket = async (req, res, next) => {
   const { ticket_id } = req.params;
   const { title, body } = req.body;
@@ -122,9 +141,7 @@ exports.removeTicket = async (req, res, next) => {
 };
 
 exports.resolveTicket = async (req, res, next) => {
-  //TODO: only tutors can resolve (needs protection route)
   const { ticket_id } = req.params;
-  console.log(ticket_id);
   try {
     const ticket = await Ticket.findByIdAndUpdate(
       ticket_id,
@@ -143,7 +160,6 @@ exports.resolveTicket = async (req, res, next) => {
 };
 
 exports.unResolveTicket = async (req, res, next) => {
-  //TODO: only tutors can resolve (needs protection route)
   const { ticket_id } = req.params;
 
   try {
