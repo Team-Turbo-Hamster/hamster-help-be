@@ -26,7 +26,7 @@ ticketRouter
   .route("/:ticket_id")
   .get(getTicketById)
   .patch(updateTicket)
-  .delete(removeTicket);
+  .delete(authHttp.isTutor, removeTicket);
 
 ticketRouter.route("/tag/:tag_name").get(getAllTicketsByTag);
 

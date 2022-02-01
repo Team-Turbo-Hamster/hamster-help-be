@@ -110,10 +110,6 @@ exports.getAllTicketsResolved = async (req, res, next) => {
   }
 };
 
-// exports.getAllTicketsResolvedByUserId = async (req, res, next) => {};
-
-// exports.getAllTicketsUnresolvedByUserId = async (req, res, next) => {};
-
 exports.getAllTicketsByTag = async (req, res, next) => {
   const { tag_name } = req.params;
 
@@ -145,8 +141,6 @@ exports.updateTicket = async (req, res, next) => {
 };
 
 exports.removeTicket = async (req, res, next) => {
-  //TODO: protect so only owner can delete a ticket/ tutor???
-
   const { ticket_id } = req.params;
   try {
     const ticket = await Ticket.findByIdAndDelete(ticket_id);
