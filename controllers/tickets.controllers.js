@@ -90,6 +90,37 @@ exports.getTicketByUserId = async (req, res, next) => {
   }
 };
 
+exports.getAllTicketsUnresolved = async (req, res, next) => {
+  try {
+    const tickets = await Ticket.find({ resolved: { $eq: false } });
+
+    res.status(200).send({ tickets });
+  } catch (error) {
+    next(error);
+  }
+};
+
+exports.getAllTicketsResolved = async (req, res, next) => {
+  try {
+    const tickets = await Ticket.find({ resolved: { $eq: true } });
+
+    res.status(200).send({ tickets });
+  } catch (error) {
+    next(error);
+  }
+};
+
+exports.getAllTicketsByTag = async (req, res, next) => {
+  const { tag_name } = req.params;
+
+  try {
+    const tickets = await Ticket.find({ tags: { $in: tag_name } });
+    res.status(200).send({ tickets });
+  } catch (error) {
+    next(error);
+  }
+};
+
 exports.updateTicket = async (req, res, next) => {
   const { ticket_id } = req.params;
   const { title, body } = req.body;
@@ -110,8 +141,6 @@ exports.updateTicket = async (req, res, next) => {
 };
 
 exports.removeTicket = async (req, res, next) => {
-  //TODO: protect so only owner can delete a ticket/ tutor???
-
   const { ticket_id } = req.params;
   try {
     const ticket = await Ticket.findByIdAndDelete(ticket_id);
@@ -122,9 +151,7 @@ exports.removeTicket = async (req, res, next) => {
 };
 
 exports.resolveTicket = async (req, res, next) => {
-  //TODO: only tutors can resolve (needs protection route)
   const { ticket_id } = req.params;
-  console.log(ticket_id);
   try {
     const ticket = await Ticket.findByIdAndUpdate(
       ticket_id,
@@ -138,12 +165,12 @@ exports.resolveTicket = async (req, res, next) => {
 
     res.status(200).send({ ticket });
   } catch (error) {
+    console.log(error);
     next(error);
   }
 };
 
 exports.unResolveTicket = async (req, res, next) => {
-  //TODO: only tutors can resolve (needs protection route)
   const { ticket_id } = req.params;
 
   try {
