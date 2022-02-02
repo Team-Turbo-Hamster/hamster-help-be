@@ -157,6 +157,7 @@ exports.removeTicket = async (req, res, next) => {
 
 exports.resolveTicket = async (req, res, next) => {
   const { ticket_id } = req.params;
+  console.log("resolve ticket", ticket_id);
   try {
     const ticket = await Ticket.findByIdAndUpdate(
       ticket_id,
@@ -166,7 +167,13 @@ exports.resolveTicket = async (req, res, next) => {
       {
         new: true,
       }
-    );
+    ).populate({
+      path: "comments",
+      populate: {
+        path: "user",
+        model: "User",
+      },
+    });
 
     res.status(200).send({ ticket });
   } catch (error) {
@@ -187,7 +194,13 @@ exports.unResolveTicket = async (req, res, next) => {
       {
         new: true,
       }
-    );
+    ).populate({
+      path: "comments",
+      populate: {
+        path: "user",
+        model: "User",
+      },
+    });
 
     res.status(200).send({ ticket });
   } catch (error) {
