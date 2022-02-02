@@ -1,4 +1,8 @@
 const express = require("express");
+const {
+  createComment,
+  removeComment,
+} = require("../controllers/comments.controllers");
 const ticketRouter = express.Router();
 const {
   createTicket,
@@ -12,6 +16,7 @@ const {
   getAllTicketsUnresolved,
   getAllTicketsResolved,
 } = require("../controllers/tickets.controllers");
+const { getMe } = require("../controllers/users.controllers");
 const authHttp = require("../middleware/authHttp");
 
 ticketRouter
@@ -36,5 +41,13 @@ ticketRouter
 ticketRouter
   .route("/:ticket_id/unresolve")
   .patch(authHttp.isTutor, unResolveTicket);
+
+ticketRouter
+  .route("/:ticket_id/new-comment")
+  .patch(authHttp.isLoggedIn, getMe, createComment);
+
+ticketRouter
+  .route("/:ticket_id/remove-comment")
+  .patch(authHttp.isLoggedIn, getMe, removeComment);
 
 module.exports = ticketRouter;

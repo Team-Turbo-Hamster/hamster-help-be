@@ -40,6 +40,26 @@ const ticketSchema = new mongoose.Schema(
       type: Boolean,
       default: false,
     },
+    comments: [
+      {
+        _id: {
+          type: mongoose.Schema.Types.ObjectId,
+          default: new mongoose.Types.ObjectId(),
+        },
+        body: {
+          type: String,
+          required: [true, "Please add a text to a comment"],
+        },
+        created_at: {
+          type: Date,
+          default: Date.now(),
+        },
+        user: {
+          type: mongoose.Schema.Types.ObjectId,
+          ref: "User",
+        },
+      },
+    ],
   },
   {
     toJSON: { virtuals: true },
