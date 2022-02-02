@@ -1,5 +1,6 @@
 const mongoose = require("mongoose");
 const validator = require("validator");
+const uuid = require("uuid");
 
 const ticketSchema = new mongoose.Schema(
   {
@@ -43,8 +44,8 @@ const ticketSchema = new mongoose.Schema(
     comments: [
       {
         _id: {
-          type: mongoose.Schema.Types.ObjectId,
-          default: new mongoose.Types.ObjectId(),
+          type: String,
+          default: uuid.v4().toString(),
         },
         body: {
           type: String,
@@ -57,6 +58,7 @@ const ticketSchema = new mongoose.Schema(
         user: {
           type: mongoose.Schema.Types.ObjectId,
           ref: "User",
+          required: [true, "Comment must have Commenter"],
         },
       },
     ],
