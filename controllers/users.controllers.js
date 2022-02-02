@@ -62,7 +62,7 @@ exports.authenticateUser = async (req, res, next) => {
       const isValid = await validatePassword(password, user.password);
 
       if (isValid) {
-        const { name, avatar, role, email, _id } = user;
+        const { name, avatar, role, email, _id, username } = user;
         const token = jwt.sign({ _id, avatar, role, email }, email);
 
         res.status(200).send({
@@ -71,6 +71,8 @@ exports.authenticateUser = async (req, res, next) => {
           avatar,
           role,
           email,
+          _id,
+          username,
         });
       } else {
         next({ status: 403, msg: "Invalid password" });
