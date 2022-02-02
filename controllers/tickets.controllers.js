@@ -1,4 +1,3 @@
-const { promise } = require("bcrypt/promises");
 const { rejectQuery } = require("../errors/rejectQuery");
 const Ticket = require("../models/ticket.model");
 const User = require("../models/user.model");
@@ -66,7 +65,13 @@ exports.getTicketById = async (req, res, next) => {
   const { ticket_id } = req.params;
 
   try {
-    const ticket = await Ticket.findById(ticket_id);
+    const ticket = await Ticket.findById(ticket_id).populate({
+      path: "comments",
+      populate: {
+        path: "user",
+        model: "User",
+      },
+    });
 
     if (!ticket) {
       await rejectQuery("Not Found", 404);
