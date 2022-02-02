@@ -1,3 +1,4 @@
+const { promise } = require("bcrypt/promises");
 const { rejectQuery } = require("../errors/rejectQuery");
 const Ticket = require("../models/ticket.model");
 const User = require("../models/user.model");
@@ -73,6 +74,7 @@ exports.getTicketById = async (req, res, next) => {
       },
     });
 
+    console.log(ticket);
     if (!ticket) {
       await rejectQuery("Not Found", 404);
     }
@@ -157,7 +159,6 @@ exports.removeTicket = async (req, res, next) => {
 
 exports.resolveTicket = async (req, res, next) => {
   const { ticket_id } = req.params;
-  console.log("resolve ticket", ticket_id);
   try {
     const ticket = await Ticket.findByIdAndUpdate(
       ticket_id,
@@ -167,13 +168,7 @@ exports.resolveTicket = async (req, res, next) => {
       {
         new: true,
       }
-    ).populate({
-      path: "comments",
-      populate: {
-        path: "user",
-        model: "User",
-      },
-    });
+    );
 
     res.status(200).send({ ticket });
   } catch (error) {
@@ -194,13 +189,7 @@ exports.unResolveTicket = async (req, res, next) => {
       {
         new: true,
       }
-    ).populate({
-      path: "comments",
-      populate: {
-        path: "user",
-        model: "User",
-      },
-    });
+    );
 
     res.status(200).send({ ticket });
   } catch (error) {
