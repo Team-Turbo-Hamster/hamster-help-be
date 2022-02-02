@@ -51,12 +51,13 @@ exports.authenticateUser = async (req, res, next) => {
   const io = req.app.get("socket.io");
 
   try {
-    const { email, password } = req.body;
+    const { username, password } = req.body;
+    console.log(req.body);
     const user = await User.findOne(
-      { email },
+      { username },
       "email +password avatar name role"
     );
-
+    console.log(user);
     if (user) {
       const isValid = await validatePassword(password, user.password);
 
@@ -86,7 +87,7 @@ exports.getUserById = async (req, res, next) => {
   try {
     const { user_id } = req.params;
     const user = await User.findById(user_id);
-    
+
     res.status(200).send({ user });
   } catch (error) {
     next(error);
