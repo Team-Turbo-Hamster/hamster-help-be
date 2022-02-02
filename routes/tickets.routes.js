@@ -37,10 +37,10 @@ ticketRouter.route("/tag/:tag_name").get(getAllTicketsByTag);
 
 ticketRouter
   .route("/:ticket_id/resolve")
-  .patch(authHttp.isTutor, resolveTicket);
+  .patch(authHttp.isLoggedIn, resolveTicket);
 ticketRouter
   .route("/:ticket_id/unresolve")
-  .patch(authHttp.isTutor, unResolveTicket);
+  .patch(authHttp.isLoggedIn, unResolveTicket);
 
 ticketRouter
   .route("/:ticket_id/new-comment")
