@@ -55,7 +55,7 @@ exports.authenticateUser = async (req, res, next) => {
     console.log(req.body);
     const user = await User.findOne(
       { username },
-      "email +password avatar name role"
+      "email +password avatar name role username"
     );
     console.log(user);
     if (user) {
@@ -63,7 +63,10 @@ exports.authenticateUser = async (req, res, next) => {
 
       if (isValid) {
         const { name, avatar, role, email, _id, username } = user;
-        const token = jwt.sign({ _id, avatar, role, email }, email);
+        const token = jwt.sign(
+          { _id, avatar, role, email, username, name },
+          username
+        );
 
         res.status(200).send({
           token,
