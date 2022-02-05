@@ -2,6 +2,26 @@ const mongoose = require("mongoose");
 const validator = require("validator");
 const uuid = require("uuid");
 
+const commentSchema = new mongoose.Schema({
+  comment_id: {
+    type: String,
+    default: uuid.v4().toString,
+  },
+  body: {
+    type: String,
+    required: [true, "Please add a text to a comment"],
+  },
+  created_at: {
+    type: Date,
+    default: Date.now,
+  },
+  user: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "User",
+    required: [true, "Comment must have Commenter"],
+  },
+});
+
 const ticketSchema = new mongoose.Schema(
   {
     title: {
@@ -31,7 +51,7 @@ const ticketSchema = new mongoose.Schema(
     ],
     created_at: {
       type: Date,
-      default: Date.now(),
+      default: Date.now,
     },
     resolved: {
       type: Boolean,
@@ -41,27 +61,7 @@ const ticketSchema = new mongoose.Schema(
       type: Boolean,
       default: false,
     },
-    comments: [
-      {
-        _id: {
-          type: String,
-          default: uuid.v4().toString(),
-        },
-        body: {
-          type: String,
-          required: [true, "Please add a text to a comment"],
-        },
-        created_at: {
-          type: Date,
-          default: Date.now(),
-        },
-        user: {
-          type: mongoose.Schema.Types.ObjectId,
-          ref: "User",
-          required: [true, "Comment must have Commenter"],
-        },
-      },
-    ],
+    comments: [commentSchema],
   },
   {
     toJSON: { virtuals: true },
