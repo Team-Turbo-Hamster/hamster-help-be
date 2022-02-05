@@ -63,12 +63,11 @@ const isTutor = async (req, res, next) => {
 };
 
 const isLoggedIn = async (req, res, next) => {
-  console.log("lol");
   try {
     if (hasToken(req)) {
       const token = getToken(req);
       const decoded = jwt.decode(token);
-      if (decoded && jwt.verify(token, decoded.payload.email)) {
+      if (decoded && jwt.verify(token, decoded.payload.username)) {
         req.user = decoded.payload._id;
         next();
       } else {
