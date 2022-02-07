@@ -2,6 +2,7 @@ const User = require("../models/user.model");
 const jwt = require("../api/jwt");
 const { cloudinary } = require("../utils/cloudinary");
 const { validatePassword } = require("../api/password");
+const log = require("../log");
 
 exports.getAllUsers = async (req, res, next) => {
   const users = await User.find();
@@ -10,7 +11,6 @@ exports.getAllUsers = async (req, res, next) => {
 
 exports.createUser = async (req, res, next) => {
   try {
-    console.log(req.body, "======================");
     const { avatar, name, email, password, role, username } = req.body;
     let avatar_img_location;
 
@@ -43,21 +43,20 @@ exports.createUser = async (req, res, next) => {
       },
     });
   } catch (error) {
-    next(error);
+    next({ status: 400, msg: "Invalid credentials for new user" });
   }
 };
 
 exports.authenticateUser = async (req, res, next) => {
-  const io = req.app.get("socket.io");
-
+  const logger = log.getLogger("Users Controller > authenticateUser");
   try {
     const { username, password } = req.body;
-    console.log(req.body);
+
     const user = await User.findOne(
       { username },
       "email +password avatar name role username"
     );
-    console.log(user);
+
     if (user) {
       const isValid = await validatePassword(password, user.password);
 

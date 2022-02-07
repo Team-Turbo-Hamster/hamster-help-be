@@ -1,4 +1,3 @@
-const e = require("express");
 const jwt = require("../api/jwt");
 const { rejectQuery } = require("../errors/rejectQuery");
 
@@ -14,7 +13,7 @@ const isAuth = (req) => {
       const token = getToken(req);
       const decoded = jwt.decode(token);
 
-      return jwt.verify(token, decoded.payload.email);
+      return jwt.verify(token, decoded.payload.username);
     } catch (err) {
       return false;
     }

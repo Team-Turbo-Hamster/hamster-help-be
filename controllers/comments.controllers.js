@@ -1,7 +1,5 @@
 const { rejectQuery } = require("../errors/rejectQuery");
 const Ticket = require("../models/ticket.model");
-const User = require("../models/user.model");
-const { cloudinary } = require("../utils/cloudinary");
 
 exports.createComment = async (req, res, next) => {
   const { ticket_id } = req.params;

@@ -1,8 +1,8 @@
-const { promise } = require("bcrypt/promises");
 const { rejectQuery } = require("../errors/rejectQuery");
 const Ticket = require("../models/ticket.model");
 const User = require("../models/user.model");
 const { cloudinary } = require("../utils/cloudinary");
+const log = require("../log");
 
 const uploadImages = async (images) => {
   const uploadedImages = await Promise.all(
@@ -19,26 +19,33 @@ const uploadImages = async (images) => {
 };
 
 exports.createTicket = async (req, res, next) => {
-  const { body, title, images } = req.body;
+  const logger = log.getLogger("Ticket Controller > createTicket");
+  const { body, title, images = [] } = req.body;
 
+  logger.log(req.user);
+  logger.log("Received request to create ticket");
   try {
     if (!body || !title) {
+      logger.warn("Ticket fields missing");
       await rejectQuery("Ticket fields missing", 400);
     }
 
     let uploadedImages = [];
 
     if (images.length > 0) {
+      logger.info(`Uploading ${images.length} images...`);
       const data = await uploadImages(images);
       uploadedImages = data;
     }
 
+    logger.info("Saving ticket...");
     const ticket = await Ticket.create({
       ...req.body,
       images: uploadedImages,
       user: req.user,
     });
 
+    logger.info("Adding ticket to user...");
     await User.findByIdAndUpdate(
       req.user,
       {
@@ -46,16 +53,22 @@ exports.createTicket = async (req, res, next) => {
       },
       { new: true }
     );
+
+    logger.info("New Ticket created, sending");
     res.status(201).send({ ticket });
   } catch (error) {
+    logger.error(error);
     next(error);
   }
 };
 
 exports.getAllTickets = async (req, res, next) => {
+  const logger = log.getLogger("Ticket Controller > getAllTickets");
   try {
+    logger.info("Retrieving tickets from DB");
     const tickets = await Ticket.find();
 
+    logger.info(`Sending ${tickets.length} tickets to client`);
     res.status(200).send({ tickets });
   } catch (error) {
     next(error);
@@ -152,46 +165,6 @@ exports.removeTicket = async (req, res, next) => {
   try {
     const ticket = await Ticket.findByIdAndDelete(ticket_id);
     res.status(204).send({ msg: "Ticket deleted successfully" });
-  } catch (error) {
-    next(error);
-  }
-};
-
-exports.resolveTicket = async (req, res, next) => {
-  const { ticket_id } = req.params;
-  try {
-    const ticket = await Ticket.findByIdAndUpdate(
-      ticket_id,
-      {
-        $set: { resolved: true },
-      },
-      {
-        new: true,
-      }
-    );
-
-    res.status(200).send({ ticket });
-  } catch (error) {
-    console.log(error);
-    next(error);
-  }
-};
-
-exports.unResolveTicket = async (req, res, next) => {
-  const { ticket_id } = req.params;
-
-  try {
-    const ticket = await Ticket.findByIdAndUpdate(
-      ticket_id,
-      {
-        $set: { resolved: false },
-      },
-      {
-        new: true,
-      }
-    );
-
-    res.status(200).send({ ticket });
   } catch (error) {
     next(error);
   }

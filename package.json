@@ -23,6 +23,7 @@
   },
   "homepage": "https://github.com/Team-Turbo-Hamster/hamster-help-be#readme",
   "devDependencies": {
+    "axios": "^0.25.0",
     "chai": "^4.3.4",
     "mocha": "^9.2.0",
     "supertest": "^6.2.2"
@@ -35,6 +36,8 @@
     "express": "^4.17.2",
     "joi": "^17.5.0",
     "jsonwebtoken": "^8.5.1",
+    "loglevel": "^1.8.0",
+    "loglevel-plugin-prefix": "^0.8.4",
     "mongoose": "^6.1.7",
     "node-rsa": "^1.1.1",
     "nodemon": "^2.0.15",

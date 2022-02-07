@@ -10,8 +10,6 @@ const {
   getTicketById,
   updateTicket,
   removeTicket,
-  resolveTicket,
-  unResolveTicket,
   getAllTicketsByTag,
   getAllTicketsUnresolved,
   getAllTicketsResolved,
@@ -34,20 +32,5 @@ ticketRouter
   .delete(authHttp.isTutor, removeTicket);
 
 ticketRouter.route("/tag/:tag_name").get(getAllTicketsByTag);
-
-ticketRouter
-  .route("/:ticket_id/resolve")
-  .patch(authHttp.isLoggedIn, resolveTicket);
-ticketRouter
-  .route("/:ticket_id/unresolve")
-  .patch(authHttp.isLoggedIn, unResolveTicket);
-
-ticketRouter
-  .route("/:ticket_id/new-comment")
-  .patch(authHttp.isLoggedIn, getMe, createComment);
-
-ticketRouter
-  .route("/:ticket_id/remove-comment")
-  .patch(authHttp.isLoggedIn, getMe, removeComment);
 
 module.exports = ticketRouter;
