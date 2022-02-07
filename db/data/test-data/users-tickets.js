@@ -40,15 +40,6 @@ module.exports = [
     password: "jEp5ZIlD",
     avatar: "http://dummyimage.com/100x100.png/ff4444/ffffff",
     role: "Student",
-    tickets: [
-      {
-        title:
-          "Proin leo odio, porttitor id, consequat in, consequat ut, nulla. Sed accumsan felis. Ut at dolor quis odio consequat varius.",
-        body: "Morbi porttitor lorem id ligula. Suspendisse ornare consequat lectus. In est risus, auctor sed, tristique in, tempus sit amet, sem.\n\nFusce consequat. Nulla nisl. Nunc nisl.\n\nDuis bibendum, felis sed interdum venenatis, turpis enim blandit mi, in porttitor pede justo eu massa. Donec dapibus. Duis at velit eu est congue elementum.",
-        tags: "Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Proin risus. Praesent lectus.",
-        image: "http://dummyimage.com/100x100.png/ff4444/ffffff",
-      },
-    ],
   },
   {
     username: "tts1",
